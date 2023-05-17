@@ -1,11 +1,18 @@
 import { Types } from "aptos";
-import { INFORMATION_MODULE, MOUDLE_ADDRESS } from "./constants";
+import {
+  COLLECTION,
+  INFORMATION_MODULE,
+  MOUDLE_ADDRESS,
+  RESOURCE_ADDRESS,
+} from "./constants";
+import { IChainID } from "./types";
 
 const createPredictEvent = async (
   signAndSubmitTransactionCallback: (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   description: string,
   uri: string,
   options: string[],
@@ -16,7 +23,9 @@ const createPredictEvent = async (
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::create_predict_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::create_predict_event`,
     type_arguments: [type_arguments],
     arguments: [description, uri, options, start_time, end_time, payout_time],
   };
@@ -28,6 +37,7 @@ const createSurveyEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   description: string,
   uri: string,
   reward: number,
@@ -39,7 +49,9 @@ const createSurveyEvent = async (
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::create_survey_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::create_survey_event`,
     type_arguments: [type_arguments],
     arguments: [
       description,
@@ -59,6 +71,7 @@ const createSurveyNFTEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   description: string,
   collection: string,
   uri: string,
@@ -69,7 +82,9 @@ const createSurveyNFTEvent = async (
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::create_survey_nft_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::create_survey_nft_event`,
     type_arguments: [],
     arguments: [
       description,
@@ -89,6 +104,7 @@ const predictEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   option: string,
   amount: number,
   event_creator: string,
@@ -98,7 +114,9 @@ const predictEvent = async (
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::predict_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::predict_event`,
     type_arguments: [type_arguments],
     arguments: [
       option,
@@ -116,6 +134,7 @@ const surveyEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   option: string,
   event_creator: string,
   event_description: String,
@@ -124,7 +143,9 @@ const surveyEvent = async (
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::survey_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::survey_event`,
     type_arguments: [type_arguments],
     arguments: [option, event_creator, event_description, event_options],
   };
@@ -136,6 +157,7 @@ const surveyNFTEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   option: string,
   amount: number,
   event_creator: string,
@@ -148,7 +170,9 @@ const surveyNFTEvent = async (
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::survey_nft_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::survey_nft_event`,
     type_arguments: [],
     arguments: [
       option,
@@ -170,17 +194,18 @@ const redeemPredictEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
-  creator: string,
-  collection: string,
+  chainID: IChainID["value"],
   name: string,
   amount: number,
   type_arguments: string
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::redeem_predict_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::redeem_predict_event`,
     type_arguments: [type_arguments],
-    arguments: [creator, collection, name, amount],
+    arguments: [RESOURCE_ADDRESS[chainID], COLLECTION, name, amount],
   };
   return signAndSubmitTransactionCallback(payload);
 };
@@ -190,16 +215,17 @@ const redeemSurveyEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
-  creator: string,
-  collection: string,
+  chainID: IChainID["value"],
   name: string,
   type_arguments: string
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::redeem_survey_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::redeem_survey_event`,
     type_arguments: [type_arguments],
-    arguments: [creator, collection, name],
+    arguments: [RESOURCE_ADDRESS[chainID], COLLECTION, name],
   };
   return signAndSubmitTransactionCallback(payload);
 };
@@ -209,16 +235,17 @@ const redeemSurveyNFTEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
-  creator: string,
-  collection: string,
+  chainID: IChainID["value"],
   name: string,
   amount: number
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::redeem_survey_nft_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::redeem_survey_nft_event`,
     type_arguments: [],
-    arguments: [creator, collection, name, amount],
+    arguments: [RESOURCE_ADDRESS[chainID], COLLECTION, name, amount],
   };
   return signAndSubmitTransactionCallback(payload);
 };
@@ -228,6 +255,7 @@ const finalizePredictEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   description: string,
   options: string[],
   outcomes: number[],
@@ -235,7 +263,9 @@ const finalizePredictEvent = async (
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::finalize_predict_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::finalize_predict_event`,
     type_arguments: [type_arguments],
     arguments: [description, options, outcomes],
   };
@@ -247,6 +277,7 @@ const finalizeSurveyEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   description: string,
   options: string[],
   outcomes: number[],
@@ -254,28 +285,31 @@ const finalizeSurveyEvent = async (
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::finalize_survey_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::finalize_survey_event`,
     type_arguments: [type_arguments],
     arguments: [description, options, outcomes],
   };
   return signAndSubmitTransactionCallback(payload);
 };
 
-
 const finalizeSurveyNFtEvent = async (
   signAndSubmitTransactionCallback: (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   description: string,
   options: string[],
   outcomes: number[],
-  type_arguments: string
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::finalize_survey_event`,
-    type_arguments: [type_arguments],
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::finalize_survey_nft_event`,
+    type_arguments: [],
     arguments: [description, options, outcomes],
   };
   return signAndSubmitTransactionCallback(payload);
@@ -286,13 +320,16 @@ const cancelPredictEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   description: string,
   options: string[],
   type_arguments: string
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::cancel_predict_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::cancel_predict_event`,
     type_arguments: [type_arguments],
     arguments: [description, options],
   };
@@ -304,13 +341,16 @@ const cancelSurveyEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   description: string,
   options: string[],
   type_arguments: string
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::cancel_survey_event`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::cancel_survey_event`,
     type_arguments: [type_arguments],
     arguments: [description, options],
   };
@@ -322,14 +362,16 @@ const cancelSurveyNFTEvent = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   description: string,
   options: string[],
-  type_arguments: string
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::cancel_survey_nft_event`,
-    type_arguments: [type_arguments],
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::cancel_survey_nft_event`,
+    type_arguments: [],
     arguments: [description, options],
   };
   return signAndSubmitTransactionCallback(payload);
@@ -340,11 +382,14 @@ const registerCoinType = async (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
+  chainID: IChainID["value"],
   type_arguments: string
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[2]}::${INFORMATION_MODULE}::register_coin_type`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${INFORMATION_MODULE}::register_coin_type`,
     type_arguments: [type_arguments],
     arguments: [],
   };

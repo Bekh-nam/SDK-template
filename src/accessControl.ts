@@ -1,21 +1,40 @@
 // import { AptosClient } from "aptos"
-import { Types } from "aptos";
-import { ACCESS_CONTROL_MODULE, MOUDLE_ADDRESS } from "./constants";
+import { AptosClient, Types } from "aptos";
+import {
+  ACCESS_CONTROL_MODULE,
+  APTOS_NODE_URL,
+  MOUDLE_ADDRESS,
+} from "./constants";
+import { IChainID } from "./types";
 
 const addMemberToOperatorRole = async (
   signAndSubmitTransactionCallback: (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>,
-  role: string,
+  chainID: IChainID["value"],
   member: string
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS}::${ACCESS_CONTROL_MODULE}::add_member_to_operator_role`,
+    function: `${
+      MOUDLE_ADDRESS[chainID]
+    }::${ACCESS_CONTROL_MODULE}::add_member_to_operator_role`,
     type_arguments: [],
-    arguments: [role, member],
+    arguments: [member],
   };
   return signAndSubmitTransactionCallback(payload);
 };
-export { addMemberToOperatorRole };
+
+const getMemberOperatorRole = async (chainId: IChainID["value"]) => {
+  const client = new AptosClient(APTOS_NODE_URL[chainId]);
+  const { data }: any = await client.getAccountResource(
+    MOUDLE_ADDRESS[chainId],
+    `${MOUDLE_ADDRESS[chainId]}::access_control::AccessControl`
+  );
+  const operator = data.role.data.filter(
+    (item: any) => item.key === "Operator"
+  )[0].value;
+  return operator;
+};
+export { addMemberToOperatorRole, getMemberOperatorRole };

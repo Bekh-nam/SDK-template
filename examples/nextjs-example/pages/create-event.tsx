@@ -1,7 +1,7 @@
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Button, DatePicker, DatePickerProps, Input, Select } from "antd";
 import InformationSDK from "../../../src/index";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 interface IDataInput {
   description?: string;
@@ -13,23 +13,13 @@ interface IDataInput {
   endTime?: number;
   payoutTime?: number;
 }
-const createEvent = () => {
-  const {
-    connected,
-    disconnect,
-    account,
-    network,
-    wallet,
-    signAndSubmitTransaction,
-    signAndSubmitBCSTransaction,
-    signTransaction,
-    signMessage,
-    signMessageAndVerify,
-  } = useWallet();
+const CreateEvent = () => {
+  const { network, signAndSubmitTransaction } = useWallet();
   const [result, setResult] = useState();
+  const [option, setOption] = useState<string>();
   const [typeEvent, setTypeEvent] = useState("predict");
   const [coinType, setCoinType] = useState("0x1::aptos_coin::AptosCoin");
-  const [dataInput, setDateInput] = useState<IDataInput>({
+  const [dataInput, setDataInput] = useState<IDataInput>({
     description: "",
     collection: "",
     uri: "",
@@ -40,8 +30,18 @@ const createEvent = () => {
     payoutTime: 0,
   });
 
-  const informationSDk = new InformationSDK(signAndSubmitTransaction, 2);
-  let now = new Date().getTime();
+  const chainID = useMemo(() => {
+    if (network?.name === "mainnet") {
+      return 1;
+    }
+    if (network?.name === "testnet") {
+      return 2;
+    }
+    return 41;
+  }, []);
+
+  const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID);
+
   const handleChangeTypeEvent = (value: string) => {
     setTypeEvent(value);
   };
@@ -50,27 +50,19 @@ const createEvent = () => {
   };
 
   const onChangeStartTime: DatePickerProps["onChange"] = (date) => {
-    setDateInput((pre: IDataInput) => {
+    setDataInput((pre: IDataInput) => {
       return {
         ...pre,
-        startTime: date?.valueOf(),
+        startTime: Math.ceil(date?.valueOf()! / 1000),
       };
     });
   };
 
   const onChangeEndTime: DatePickerProps["onChange"] = (date) => {
-    setDateInput((pre: IDataInput) => {
+    setDataInput((pre: IDataInput) => {
       return {
         ...pre,
-        endTime: date?.valueOf(),
-      };
-    });
-  };
-  const onChangePayoutTime: DatePickerProps["onChange"] = (date) => {
-    setDateInput((pre: IDataInput) => {
-      return {
-        ...pre,
-        payoutTime: date?.valueOf(),
+        endTime: Math.ceil(date?.valueOf()! / 1000),
       };
     });
   };
@@ -122,7 +114,7 @@ const createEvent = () => {
   const onChangeInput = (e: any) => {
     if (e.target.name === "reward") {
       if (e.target.value == +e.target.value) {
-        setDateInput((pre: IDataInput) => {
+        setDataInput((pre: IDataInput) => {
           return {
             ...pre,
             [e.target.name]: +e.target.value,
@@ -130,7 +122,7 @@ const createEvent = () => {
         });
       }
     }
-    setDateInput((pre: IDataInput) => {
+    setDataInput((pre: IDataInput) => {
       return {
         ...pre,
         [e.target.name]: e.target.value,
@@ -140,14 +132,13 @@ const createEvent = () => {
 
   const onKeyDown = (e: any) => {
     if (e.keyCode === 13) {
-      setDateInput((pre: IDataInput) => {
-        let options = pre.options;
-        options?.push(e.target.value);
+      setDataInput((pre: IDataInput) => {
         return {
           ...pre,
-          options: options,
+          options: [...pre.options!, e.target.value],
         };
       });
+      setOption("");
     }
   };
 
@@ -218,10 +209,14 @@ const createEvent = () => {
       <div className="input">
         <div className="input-label">Options</div>
         <div className="input-field">
-          <Input placeholder="options" name="option" onKeyDown={onKeyDown} />
-          {dataInput?.options?.map((value, index) => (
-            <div key={index}>{value}</div>
-          ))}
+          <Input
+            placeholder="options"
+            name="option"
+            value={option || ""}
+            onKeyDown={onKeyDown}
+            onChange={(e) => setOption(e.target.value)}
+          />
+          {dataInput.options?.toString()}
         </div>
       </div>
       <div className="input">
@@ -263,4 +258,4 @@ const createEvent = () => {
     </div>
   );
 };
-export default createEvent;
+export default CreateEvent;

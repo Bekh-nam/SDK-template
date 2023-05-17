@@ -12,6 +12,7 @@ node_modules
 dist/
 .nyc_output/
 build/
-
+.next/
+yarn.lock
 # Doc generation output
 docs/
