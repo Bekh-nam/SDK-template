@@ -1,6 +1,6 @@
 {
-  "name": "information-sdk",
-  "description": "Information SDK",
+  "name": "metaspacecy-aptos-prediction",
+  "description": "Prediction SDK",
   "license": "MIT",
   "engines": {
     "node": ">=11.0.0"
@@ -28,13 +28,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Bekh-nam/SDK-template.git"
+    "url": "https://github.com/MetaSpacecy/prediction-aptos-sdk.git"
   },
-  "homepage": "https://github.com/Bekh-nam/SDK-template",
+  "homepage": "https://github.com/MetaSpacecy/prediction-aptos-sdk",
   "bugs": {
-    "url": "https://github.com/Bekh-nam/SDK-template/issues"
+    "url": "https://github.com/MetaSpacecy/prediction-aptos-sdk/issues"
   },
-  "author": "<Bekh-nam <bekhnam2021@gmail.com>",
+  "author": "Bekh-nam <bekhnam2021@gmail.com>, toan.vo24122000 <space.vtoan@gmail.com>",
   "keywords": [
     "Prediction",
     "Move"
@@ -48,6 +48,7 @@
     "axios": "0.27.2",
     "form-data": "4.0.0",
     "js-sha256": "^0.9.0",
+    "pnpm": "^8.5.1",
     "tweetnacl": "1.0.3"
   },
   "devDependencies": {
@@ -71,5 +72,5 @@
     "typedoc": "^0.23.20",
     "typescript": "4.8.2"
   },
-  "version": "1.4.0"
+  "version": "1.1.7"
 }

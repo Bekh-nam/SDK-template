@@ -134,3 +134,23 @@ export const getTokenBalance = async (
   });
   return amount;
 };
+
+export const getTokenForAccount = (
+  owner: string,
+  itemName: string,
+  chainId: IChainID['value'] = 2
+) => {
+  const client = new AptosClient(APTOS_NODE_URL[chainId]);
+  const tokenClient = new TokenClient(client);
+  const tokenId: any = {
+    token_data_id: {
+      creator: RESOURCE_ADDRESS[chainId],
+      collection: COLLECTION,
+      name: itemName,
+    },
+    property_version: '0',
+  };
+  return tokenClient
+    .getTokenForAccount(owner, tokenId)
+    .then((res) => res.amount);
+};

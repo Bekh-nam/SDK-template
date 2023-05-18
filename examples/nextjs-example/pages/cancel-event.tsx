@@ -1,7 +1,8 @@
 import { Button, Input, Select } from "antd";
 import { useMemo, useState } from "react";
-import InformationSDK from "../../../src/index";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import InformationSDK from "metaspacecy-aptos-prediction";
+
 
 interface IDataInput {
   event_description?: string;
@@ -26,7 +27,7 @@ const CancelEvent = () => {
     if (network?.name === "testnet") {
       return 2;
     }
-    return 41;
+    return 2;
   }, []);
 
   const handleChangeTypeEvent = (value: string) => {
