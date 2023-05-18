@@ -19,6 +19,7 @@ import {
   surveyNFTEvent,
 } from "./information";
 import { IChainID } from "./types";
+import * as Constants from "./constants";
 
 export default class InformationSDK {
   private chainID: IChainID["value"];
@@ -297,4 +298,4 @@ export default class InformationSDK {
     );
   }
 }
-export { getResource };
+export { getResource, Constants };
