@@ -1,4 +1,4 @@
-import { Types } from "aptos";
+import { HexString, Types } from "aptos";
 import {
   COLLECTION,
   INFORMATION_MODULE,
@@ -107,7 +107,7 @@ const predictEvent = async (
   chainID: IChainID["value"],
   option: string,
   amount: number,
-  event_creator: string,
+  event_creator: HexString,
   event_description: String,
   event_options: string[],
   type_arguments: string
@@ -136,7 +136,7 @@ const surveyEvent = async (
   ) => Promise<any>,
   chainID: IChainID["value"],
   option: string,
-  event_creator: string,
+  event_creator: HexString,
   event_description: String,
   event_options: string[],
   type_arguments: string
@@ -160,10 +160,10 @@ const surveyNFTEvent = async (
   chainID: IChainID["value"],
   option: string,
   amount: number,
-  event_creator: string,
+  event_creator: HexString,
   event_description: String,
   event_options: string[],
-  token_creator: string,
+  token_creator: HexString,
   collection: string,
   token_name: string,
   token_version: number

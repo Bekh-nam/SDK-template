@@ -1,4 +1,4 @@
-import { AptosClient, TokenClient } from "aptos";
+import { AptosClient, HexString, TokenClient } from 'aptos';
 import {
   APTOS_NODE_URL,
   COLLECTION,
@@ -10,15 +10,15 @@ import {
   RESOURCE_ADDRESS,
   SURVEY_MODULE,
   SURVEY_NFT_MODULE,
-} from "./constants";
-import { IChainID } from "./types";
-import { getOptionHashValue } from "./utils";
+} from './constants';
+import { IChainID } from './types';
+import { getOptionHashValue } from './utils';
 
 export const getPredictEventByEventID = async (
-  creator: string,
+  creator: HexString,
   description: string,
   options: string[],
-  chainId: IChainID["value"],
+  chainId: IChainID['value'],
   coinType: string = DEFAULT_COIN_TYPE
 ) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
@@ -30,24 +30,28 @@ export const getPredictEventByEventID = async (
 
   //   await new Promise((resolve) => setTimeout(resolve, 1000))
 
-  const dataPredict = await client.getTableItem(handle, {
-    key_type: `${MOUDLE_ADDRESS[chainId]}::${INFORMATION_DATA_MODULE}::EventID`,
-    value_type: `${MOUDLE_ADDRESS[chainId]}::${PREDICT_MODULE}::Event<${coinType}>`,
-    key: {
-      creator,
-      description: `${description}?#(${coinType})?#${getOptionHashValue(
-        options
-      ) }`,
-    },
-  });
-  return dataPredict;
+  try {
+    const dataPredict = await client.getTableItem(handle, {
+      key_type: `${MOUDLE_ADDRESS[chainId]}::${INFORMATION_DATA_MODULE}::EventID`,
+      value_type: `${MOUDLE_ADDRESS[chainId]}::${PREDICT_MODULE}::Event<${coinType}>`,
+      key: {
+        creator,
+        description: `${description}?#(${coinType})?#${getOptionHashValue(
+          options
+        )}`,
+      },
+    });
+    return dataPredict;
+  } catch (error: any) {
+    return error;
+  }
 };
 
 export const getSurveyEventByEventID = async (
-  creator: string,
+  creator: HexString,
   description: string,
   options: string[],
-  chainId: IChainID["value"],
+  chainId: IChainID['value'],
   coinType: string = DEFAULT_COIN_TYPE
 ) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
@@ -59,24 +63,28 @@ export const getSurveyEventByEventID = async (
 
   //   await new Promise((resolve) => setTimeout(resolve, 1000))
 
-  const dataPredict = await client.getTableItem(handle, {
-    key_type: `${MOUDLE_ADDRESS[chainId]}::${INFORMATION_MODULE}::EventID`,
-    value_type: `${MOUDLE_ADDRESS[chainId]}::${SURVEY_MODULE}::Event<${coinType}>`,
-    key: {
-      creator,
-      description: `${description}?#(${coinType})?#${getOptionHashValue(
-        options
-      )}`,
-    },
-  });
-  return dataPredict;
+  try {
+    const dataPredict = await client.getTableItem(handle, {
+      key_type: `${MOUDLE_ADDRESS[chainId]}::${INFORMATION_MODULE}::EventID`,
+      value_type: `${MOUDLE_ADDRESS[chainId]}::${SURVEY_MODULE}::Event<${coinType}>`,
+      key: {
+        creator,
+        description: `${description}?#(${coinType})?#${getOptionHashValue(
+          options
+        )}`,
+      },
+    });
+    return dataPredict;
+  } catch (error: any) {
+    return error;
+  }
 };
 
 export const getSurveyNFTEventByEventID = async (
-  creator: string,
+  creator: HexString,
   description: string,
   options: string[],
-  chainId: IChainID["value"],
+  chainId: IChainID['value'],
   coinType: string = DEFAULT_COIN_TYPE
 ) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
@@ -88,23 +96,27 @@ export const getSurveyNFTEventByEventID = async (
 
   //   await new Promise((resolve) => setTimeout(resolve, 1000))
 
-  const dataPredict = await client.getTableItem(handle, {
-    key_type: `${MOUDLE_ADDRESS[chainId]}::${INFORMATION_MODULE}::EventID`,
-    value_type: `${MOUDLE_ADDRESS[chainId]}::${SURVEY_NFT_MODULE}::Event`,
-    key: {
-      creator,
-      description: `${description}?#(${coinType})?#${getOptionHashValue(
-        options
-      )}`,
-    },
-  });
-  return dataPredict;
+  try {
+    const dataPredict = await client.getTableItem(handle, {
+      key_type: `${MOUDLE_ADDRESS[chainId]}::${INFORMATION_MODULE}::EventID`,
+      value_type: `${MOUDLE_ADDRESS[chainId]}::${SURVEY_NFT_MODULE}::Event`,
+      key: {
+        creator,
+        description: `${description}?#(${coinType})?#${getOptionHashValue(
+          options
+        )}`,
+      },
+    });
+    return dataPredict;
+  } catch (error: any) {
+    return error;
+  }
 };
 
 export const getTokenBalance = async (
-  owner: string,
+  owner: HexString,
   itemName: string,
-  chainId: IChainID["value"]
+  chainId: IChainID['value']
 ) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
   const tokenClient = new TokenClient(client);
@@ -114,9 +126,9 @@ export const getTokenBalance = async (
       collection: COLLECTION,
       name: itemName,
     },
-    property_version: "0",
+    property_version: '0',
   };
-  let amount: string = "";
+  let amount: string = '';
   await tokenClient.getTokenForAccount(owner, tokenId).then((res) => {
     amount = res.amount;
   });

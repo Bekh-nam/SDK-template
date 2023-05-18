@@ -1,6 +1,6 @@
 {
-  "name": "prediction",
-  "description": "Prediction SDK",
+  "name": "information-sdk",
+  "description": "Information SDK",
   "license": "MIT",
   "engines": {
     "node": ">=11.0.0"
