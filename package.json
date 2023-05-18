@@ -18,7 +18,7 @@
     "prepack": "pnpm build",
     "build": "pnpm build:clean && pnpm _build:node && pnpm _build:browser",
     "build:clean": "rm -rf dist",
-    "_build:browser": "tsup --platform browser --format iife --global-name aptosSDK --minify",
+    "_build:browser": "tsup --platform browser --format iife --global-name metaspacecySDK --minify",
     "_build:node": "tsup --format cjs,esm --dts",
     "lint": "eslint \"**/*.ts\"",
     "test": "jest",
@@ -36,7 +36,9 @@
   },
   "author": "Bekh-nam <bekhnam2021@gmail.com>, toan.vo24122000 <space.vtoan@gmail.com>",
   "keywords": [
+    "metaspacecy",
     "Prediction",
+    "Aptos",
     "Move"
   ],
   "dependencies": {
@@ -72,5 +74,5 @@
     "typedoc": "^0.23.20",
     "typescript": "4.8.2"
   },
-  "version": "1.1.7"
+  "version": "1.1.9"
 }
