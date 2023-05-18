@@ -1,5 +1,6 @@
 import { Types } from "aptos";
 import { addMemberToOperatorRole } from "./accessControl";
+import * as getResource from "./getResource";
 import {
   cancelPredictEvent,
   cancelSurveyEvent,
@@ -213,14 +214,14 @@ export default class InformationSDK {
   async finalizeSurveyNFTEvent(
     description: string,
     options: string[],
-    outcomes: number[],
+    outcomes: number[]
   ): Promise<any> {
     return finalizeSurveyNFtEvent(
       this.signAndSubmitTransactionCallback,
       this.chainID,
       description,
       options,
-      outcomes,
+      outcomes
     );
   }
 
@@ -286,13 +287,14 @@ export default class InformationSDK {
 
   async cancelSurveyNFTEvent(
     description: string,
-    options: string[],
+    options: string[]
   ): Promise<any> {
     return cancelSurveyNFTEvent(
       this.signAndSubmitTransactionCallback,
       this.chainID,
       description,
-      options,
+      options
     );
   }
 }
+export { getResource };
