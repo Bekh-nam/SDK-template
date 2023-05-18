@@ -1,5 +1,5 @@
 {
-  "name": "@aptos-labs/wallet-adapter-nextjs-example",
+  "name": "nextjs-example",
   "version": "1.0.6",
   "private": true,
   "license": "Apache-2.0",
@@ -11,9 +11,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@aptos-labs/wallet-adapter-ant-design": "workspace:*",
-    "@aptos-labs/wallet-adapter-mui-design": "workspace:*",
-    "@aptos-labs/wallet-adapter-react": "workspace:*",
+    "@aptos-labs/wallet-adapter-ant-design": "",
+    "@aptos-labs/wallet-adapter-mui-design": "",
+    "@aptos-labs/wallet-adapter-react": "",
     "@blocto/aptos-wallet-adapter-plugin": "^0.1.2",
     "@martianwallet/aptos-wallet-adapter": "^0.0.3",
     "@nightlylabs/aptos-wallet-adapter-plugin": "0.2.12",
