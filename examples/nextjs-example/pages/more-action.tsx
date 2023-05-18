@@ -1,9 +1,8 @@
 import { Button, Input, Select } from "antd";
 import { useMemo, useState } from "react";
-import InformationSDK from "../../../src/index";
+import InformationSDK, { getResource } from "metaspacecy-aptos-prediction";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Collapse } from "antd";
-import { getPredictEventByEventID, getSurveyEventByEventID, getSurveyNFTEventByEventID } from "../../../src/getResource";
 const { Panel } = Collapse;
 
 interface IDataInput {
@@ -50,7 +49,7 @@ const MoreAction = () => {
   };
   const getEvent = () => {
     if (typeEvent === "predict") {
-      getPredictEventByEventID(
+      getResource.getPredictEventByEventID(
         dataInput.event_creator!,
         dataInput.event_description!,
         dataInput.event_options!,
@@ -59,7 +58,7 @@ const MoreAction = () => {
       ).then((data) => setResult(data));
     }
     if (typeEvent === "survey") {
-      getSurveyEventByEventID(
+      getResource.getSurveyEventByEventID(
         dataInput.event_creator!,
         dataInput.event_description!,
         dataInput.event_options!,
@@ -68,7 +67,7 @@ const MoreAction = () => {
       ).then((data) => setResult(data));
     }
     if (typeEvent === "survey-nft") {
-      getSurveyNFTEventByEventID(
+      getResource.getSurveyNFTEventByEventID(
         dataInput.event_creator!,
         dataInput.event_description!,
         dataInput.event_options!,

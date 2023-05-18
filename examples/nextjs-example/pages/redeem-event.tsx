@@ -1,8 +1,8 @@
 import { Button, Input, Select } from "antd";
-import { useMemo, useState } from "react";
-import InformationSDK from "../../../src/index";
+import { useEffect, useMemo, useState } from "react";
+import InformationSDK, { Constants } from "metaspacecy-aptos-prediction";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { COLLECTION } from "../../../src/constants";
+import { getTokenForAccount } from "../../../src/getResource";
 
 interface IDataInput {
   creator: string;
@@ -12,9 +12,10 @@ interface IDataInput {
 
 const RedeemEvent = () => {
   const [typeEvent, setTypeEvent] = useState("predict");
-  const { network, signAndSubmitTransaction } = useWallet();
+  const { network, signAndSubmitTransaction, account } = useWallet();
   const [coinType, setCoinType] = useState("0x1::aptos_coin::AptosCoin");
   const [result, setResult] = useState();
+  const [tokenBalance, setTokenBalance] = useState<number>(0);
 
   const [dataInput, setDateInput] = useState<IDataInput>({
     creator: "",
@@ -29,7 +30,7 @@ const RedeemEvent = () => {
     if (network?.name === "testnet") {
       return 2;
     }
-    return 41;
+    return 2;
   }, []);
 
   const handleChangeTypeEvent = (value: string) => {
@@ -86,7 +87,14 @@ const RedeemEvent = () => {
         .then((data) => setResult(data));
     }
   };
-  console.log(dataInput);
+
+  useEffect(() => {
+    if (dataInput.name) {
+      getTokenForAccount(account?.address!, dataInput.name, chainID).then(
+        (data) => setTokenBalance(+data)
+      );
+    }
+  }, [dataInput.name]);
   return (
     <div className="container">
       <div className="title">Redeem event</div>
@@ -122,7 +130,7 @@ const RedeemEvent = () => {
             placeholder="collection"
             name="collection"
             disabled={true}
-            value={COLLECTION}
+            value={Constants.COLLECTION}
           />
         </div>
       </div>
@@ -140,6 +148,7 @@ const RedeemEvent = () => {
       <div className="input">
         <div className="input-label">Token Amount</div>
         <div className="input-field">
+        <div className="input-tag">Balance: {tokenBalance}</div>
           <Input
             placeholder="amount"
             name="amount"

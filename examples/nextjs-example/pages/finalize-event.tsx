@@ -1,6 +1,6 @@
 import { Button, Input, Select } from "antd";
 import { useMemo, useState } from "react";
-import InformationSDK from "../../../src/index";
+import InformationSDK from "metaspacecy-aptos-prediction";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 interface IDataInput {
@@ -28,7 +28,7 @@ const FinalizeEvent = () => {
     if (network?.name === "testnet") {
       return 2;
     }
-    return 41;
+    return 2;
   }, []);
 
   const handleChangeTypeEvent = (value: string) => {

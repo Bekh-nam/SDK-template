@@ -1,6 +1,6 @@
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Button, DatePicker, DatePickerProps, Input, Select } from "antd";
-import InformationSDK from "../../../src/index";
+import InformationSDK from "metaspacecy-aptos-prediction";
 import { useMemo, useState } from "react";
 
 interface IDataInput {
@@ -37,7 +37,7 @@ const CreateEvent = () => {
     if (network?.name === "testnet") {
       return 2;
     }
-    return 41;
+    return 2;
   }, []);
 
   const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID);

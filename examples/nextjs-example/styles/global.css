@@ -20,6 +20,12 @@
 }
 .input-field {
   width: 100%;
+  position: relative;
+}
+.input-tag{
+  position: absolute;
+  right: -100px;
+  z-index: 9999;
 }
 .navigator {
   display: flex;
