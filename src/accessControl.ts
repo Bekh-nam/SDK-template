@@ -1,5 +1,5 @@
 // import { AptosClient } from "aptos"
-import { AptosClient, Types } from "aptos";
+import { AptosClient, HexString, Types } from "aptos";
 import {
   ACCESS_CONTROL_MODULE,
   APTOS_NODE_URL,
@@ -13,7 +13,7 @@ const addMemberToOperatorRole = async (
     options?: any
   ) => Promise<any>,
   chainID: IChainID["value"],
-  member: string
+  member: HexString
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",

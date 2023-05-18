@@ -1,4 +1,4 @@
-import { Types } from "aptos";
+import { HexString, Types } from "aptos";
 import { addMemberToOperatorRole } from "./accessControl";
 import * as getResource from "./getResource";
 import {
@@ -40,7 +40,7 @@ export default class InformationSDK {
     this.chainID = chainID;
   }
 
-  async addMemberToOperatorRole(member: string): Promise<any> {
+  async addMemberToOperatorRole(member: HexString): Promise<any> {
     return addMemberToOperatorRole(
       this.signAndSubmitTransactionCallback,
       this.chainID,
@@ -119,7 +119,7 @@ export default class InformationSDK {
   async predictEvent(
     option: string,
     amount: number,
-    event_creator: string,
+    event_creator: HexString,
     event_description: String,
     event_options: string[],
     type_arguments: string
@@ -138,7 +138,7 @@ export default class InformationSDK {
 
   async surveyEvent(
     option: string,
-    event_creator: string,
+    event_creator: HexString,
     event_description: String,
     event_options: string[],
     type_arguments: string
@@ -157,10 +157,10 @@ export default class InformationSDK {
   async surveyNFTEvent(
     option: string,
     amount: number,
-    event_creator: string,
+    event_creator: HexString,
     event_description: String,
     event_options: string[],
-    token_creator: string,
+    token_creator: HexString,
     collection: string,
     token_name: string,
     token_version: number
