@@ -1,5 +1,5 @@
 import { HexString, Types } from "aptos";
-import { addMemberToOperatorRole } from "./accessControl";
+import { getMemberRole } from "./accessControl";
 import * as getResource from "./getResource";
 import {
   cancelPredictEvent,
@@ -40,11 +40,10 @@ export default class InformationSDK {
     this.chainID = chainID;
   }
 
-  async addMemberToOperatorRole(member: HexString): Promise<any> {
-    return addMemberToOperatorRole(
+  async getOperatorRole(): Promise<any> {
+    return getMemberRole(
       this.signAndSubmitTransactionCallback,
       this.chainID,
-      member
     );
   }
 
