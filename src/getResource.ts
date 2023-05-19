@@ -85,7 +85,6 @@ export const getSurveyNFTEventByEventID = async (
   description: string,
   options: string[],
   chainId: IChainID["value"],
-  coinType: string = DEFAULT_COIN_TYPE
 ) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
   const { data }: any = await client.getAccountResource(
@@ -100,7 +99,7 @@ export const getSurveyNFTEventByEventID = async (
       value_type: `${MOUDLE_ADDRESS[chainId]}::${SURVEY_NFT_MODULE}::Event`,
       key: {
         creator,
-        description: `${description}?#(${coinType})?#${getOptionHashValue(
+        description: `${description}?#${getOptionHashValue(
           options
         )}`,
       },
