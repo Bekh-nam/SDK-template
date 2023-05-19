@@ -1,9 +1,9 @@
 // import { AptosClient } from "aptos"
-import { AptosClient, HexString, Types } from "aptos";
+import { HexString, Types } from "aptos";
 import {
   ACCESS_CONTROL_MODULE,
-  APTOS_NODE_URL,
   MOUDLE_ADDRESS,
+  SECONDARY_ACCESS_CONTROL_MODULE,
 } from "./constants";
 import { IChainID } from "./types";
 
@@ -17,24 +17,27 @@ const addMemberToOperatorRole = async (
 ): Promise<any> => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${
-      MOUDLE_ADDRESS[chainID]
-    }::${ACCESS_CONTROL_MODULE}::add_member_to_operator_role`,
+    function: `${MOUDLE_ADDRESS[chainID]}::${ACCESS_CONTROL_MODULE}::add_member_to_operator_role`,
     type_arguments: [],
     arguments: [member],
   };
   return signAndSubmitTransactionCallback(payload);
 };
 
-const getMemberOperatorRole = async (chainId: IChainID["value"]) => {
-  const client = new AptosClient(APTOS_NODE_URL[chainId]);
-  const { data }: any = await client.getAccountResource(
-    MOUDLE_ADDRESS[chainId],
-    `${MOUDLE_ADDRESS[chainId]}::access_control::AccessControl`
-  );
-  const operator = data.role.data.filter(
-    (item: any) => item.key === "Operator"
-  )[0].value;
-  return operator;
+const getMemberRole = async (
+  signAndSubmitTransactionCallback: (
+    transaction: Types.TransactionPayload,
+    options?: any
+  ) => Promise<any>,
+  chainId: IChainID["value"]
+) => {
+  const payload: Types.TransactionPayload = {
+    type: "entry_function_payload",
+    function: `${MOUDLE_ADDRESS[chainId]}::${SECONDARY_ACCESS_CONTROL_MODULE}::get_role`,
+    type_arguments: [],
+    arguments: [],
+  };
+  return signAndSubmitTransactionCallback(payload);
 };
-export { addMemberToOperatorRole, getMemberOperatorRole };
+
+export { addMemberToOperatorRole, getMemberRole };

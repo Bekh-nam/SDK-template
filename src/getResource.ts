@@ -94,8 +94,6 @@ export const getSurveyNFTEventByEventID = async (
   );
   const { handle } = data.all_events;
 
-  //   await new Promise((resolve) => setTimeout(resolve, 1000))
-
   try {
     const dataPredict = await client.getTableItem(handle, {
       key_type: `${MOUDLE_ADDRESS[chainId]}::${INFORMATION_MODULE}::EventID`,
@@ -153,4 +151,16 @@ export const getTokenForAccount = (
   return tokenClient
     .getTokenForAccount(owner, tokenId)
     .then((res) => res.amount);
+};
+
+export const getMemberOperatorRole = async (chainId: IChainID["value"]) => {
+  const client = new AptosClient(APTOS_NODE_URL[chainId]);
+  const { data }: any = await client.getAccountResource(
+    MOUDLE_ADDRESS[chainId],
+    `${MOUDLE_ADDRESS[chainId]}::access_control::AccessControl`
+  );
+  const operator = data.role.data.filter(
+    (item: any) => item.key === "Operator"
+  )[0].value;
+  return operator;
 };

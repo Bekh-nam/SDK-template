@@ -3,10 +3,11 @@ import { useMemo, useState } from "react";
 import InformationSDK, { getResource } from "metaspacecy-aptos-prediction";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Collapse } from "antd";
+import { HexString } from "aptos";
 const { Panel } = Collapse;
 
 interface IDataInput {
-  event_creator?: string;
+  event_creator?: HexString;
   event_description?: string;
   event_options?: string[];
 }
@@ -18,7 +19,6 @@ const MoreAction = () => {
   const [coinType, setCoinType] = useState("0x1::aptos_coin::AptosCoin");
 
   const [dataInput, setDateInput] = useState<IDataInput>({
-    event_creator: "",
     event_description: "",
     event_options: [],
   });
@@ -49,31 +49,37 @@ const MoreAction = () => {
   };
   const getEvent = () => {
     if (typeEvent === "predict") {
-      getResource.getPredictEventByEventID(
-        dataInput.event_creator!,
-        dataInput.event_description!,
-        dataInput.event_options!,
-        chainID,
-        coinType
-      ).then((data) => setResult(data));
+      getResource
+        .getPredictEventByEventID(
+          dataInput.event_creator!,
+          dataInput.event_description!,
+          dataInput.event_options!,
+          chainID,
+          coinType
+        )
+        .then((data) => setResult(data));
     }
     if (typeEvent === "survey") {
-      getResource.getSurveyEventByEventID(
-        dataInput.event_creator!,
-        dataInput.event_description!,
-        dataInput.event_options!,
-        chainID,
-        coinType
-      ).then((data) => setResult(data));
+      getResource
+        .getSurveyEventByEventID(
+          dataInput.event_creator!,
+          dataInput.event_description!,
+          dataInput.event_options!,
+          chainID,
+          coinType
+        )
+        .then((data) => setResult(data));
     }
     if (typeEvent === "survey-nft") {
-      getResource.getSurveyNFTEventByEventID(
-        dataInput.event_creator!,
-        dataInput.event_description!,
-        dataInput.event_options!,
-        chainID,
-        coinType
-      ).then((data) => setResult(data));
+      getResource
+        .getSurveyNFTEventByEventID(
+          dataInput.event_creator!,
+          dataInput.event_description!,
+          dataInput.event_options!,
+          chainID,
+          coinType
+        )
+        .then((data) => setResult(data));
     }
   };
 
@@ -151,7 +157,11 @@ const MoreAction = () => {
                 placeholder="event_creator"
                 name="event_creator"
                 onChange={onChangeInput}
-                value={dataInput.event_creator}
+                value={
+                  dataInput.event_creator?.toString()
+                    ? dataInput.event_creator.toString()
+                    : ""
+                }
               />
             </div>
           </div>
