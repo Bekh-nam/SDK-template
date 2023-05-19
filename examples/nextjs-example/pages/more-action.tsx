@@ -14,7 +14,6 @@ interface IDataInput {
 const MoreAction = () => {
   const { network, signAndSubmitTransaction } = useWallet();
   const [result, setResult] = useState();
-  const [memberAddress, setMemberAddress] = useState();
   const [typeEvent, setTypeEvent] = useState("predict");
   const [coinType, setCoinType] = useState("0x1::aptos_coin::AptosCoin");
 
@@ -38,13 +37,10 @@ const MoreAction = () => {
   const handleChangeCoinType = (value: string) => {
     setCoinType(value);
   };
-  const onChangeMemberAddress = (e: any) => {
-    setMemberAddress(e.target.value);
-  };
   const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID);
   const handleAddMember = () => {
     informationSDk
-      .addMemberToOperatorRole(memberAddress!)
+      .getOperatorRole()
       .then((data) => setResult(data));
   };
   const getEvent = () => {
@@ -105,18 +101,7 @@ const MoreAction = () => {
     <div className="container">
       <div className="title">More action</div>
       <Collapse>
-        <Panel header="Add member to Operator role" key="1">
-          <div className="input">
-            <div className="input-label">Member address</div>
-            <div className="input-field">
-              <Input
-                placeholder="address"
-                name="address"
-                onChange={onChangeMemberAddress}
-                value={memberAddress}
-              />
-            </div>
-          </div>
+        <Panel header="Get Operator role" key="1">
           <Button onClick={handleAddMember}>Add</Button>
           {result && <div>{JSON.stringify(result)}</div>}
         </Panel>
@@ -169,7 +154,7 @@ const MoreAction = () => {
             <div className="input-label">Event Options</div>
             <div className="input-field">
               <Input
-                placeholder="event_options"
+                placeholder="Option is separated by commas."
                 name="event_options"
                 onChange={onChangeInput}
               />

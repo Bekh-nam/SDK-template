@@ -117,7 +117,7 @@ const CancelEvent = () => {
         <div className="input-label">Event Options</div>
         <div className="input-field">
           <Input
-            placeholder="event_options"
+            placeholder="Option is separated by commas."
             name="event_options"
             onChange={onChangeInput}
           />
