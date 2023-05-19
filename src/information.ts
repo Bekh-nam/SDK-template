@@ -121,7 +121,7 @@ const predictEvent = async (
       option,
       amount,
       event_creator,
-      event_description,
+      `${event_description}?#(${type_arguments})`,
       event_options,
     ],
   };
@@ -144,7 +144,7 @@ const surveyEvent = async (
     type: "entry_function_payload",
     function: `${MOUDLE_ADDRESS[chainID]}::${INFORMATION_MODULE}::survey_event`,
     type_arguments: [type_arguments],
-    arguments: [option, event_creator, event_description, event_options],
+    arguments: [option, event_creator, `${event_description}?#(${type_arguments})`, event_options],
   };
   return signAndSubmitTransactionCallback(payload);
 };
@@ -254,7 +254,7 @@ const finalizePredictEvent = async (
     type: "entry_function_payload",
     function: `${MOUDLE_ADDRESS[chainID]}::${INFORMATION_MODULE}::finalize_predict_event`,
     type_arguments: [type_arguments],
-    arguments: [description, options, outcomes],
+    arguments: [`${description}?#(${type_arguments})`, options, outcomes],
   };
   return signAndSubmitTransactionCallback(payload);
 };
@@ -274,7 +274,7 @@ const finalizeSurveyEvent = async (
     type: "entry_function_payload",
     function: `${MOUDLE_ADDRESS[chainID]}::${INFORMATION_MODULE}::finalize_survey_event`,
     type_arguments: [type_arguments],
-    arguments: [description, options, outcomes],
+    arguments: [`${description}?#(${type_arguments})`, options, outcomes],
   };
   return signAndSubmitTransactionCallback(payload);
 };
@@ -312,7 +312,7 @@ const cancelPredictEvent = async (
     type: "entry_function_payload",
     function: `${MOUDLE_ADDRESS[chainID]}::${INFORMATION_MODULE}::cancel_predict_event`,
     type_arguments: [type_arguments],
-    arguments: [description, options],
+    arguments: [`${description}?#(${type_arguments})`, options],
   };
   return signAndSubmitTransactionCallback(payload);
 };
@@ -331,7 +331,7 @@ const cancelSurveyEvent = async (
     type: "entry_function_payload",
     function: `${MOUDLE_ADDRESS[chainID]}::${INFORMATION_MODULE}::cancel_survey_event`,
     type_arguments: [type_arguments],
-    arguments: [description, options],
+    arguments: [`${description}?#(${type_arguments})`, options],
   };
   return signAndSubmitTransactionCallback(payload);
 };
