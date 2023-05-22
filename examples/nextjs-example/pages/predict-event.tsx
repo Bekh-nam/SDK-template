@@ -2,14 +2,15 @@ import { Button, Input, Select } from "antd";
 import { useMemo, useState } from "react";
 import InformationSDK from "metaspacecy-aptos-prediction";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { HexString } from "aptos";
 
 interface IDataInput {
   option?: string;
   amount?: number;
-  event_creator?: string;
+  event_creator?: HexString;
   event_description?: string;
   event_options?: string[];
-  token_creator?: string;
+  token_creator?: HexString;
   collection?: string;
   token_name?: string;
   token_version?: number;
@@ -24,10 +25,8 @@ const PredictEvent = () => {
   const [dataInput, setDateInput] = useState<IDataInput>({
     option: "",
     amount: 0,
-    event_creator: "",
     event_description: "",
     event_options: [],
-    token_creator: "",
     collection: "",
     token_name: "",
     token_version: 0,
@@ -180,7 +179,7 @@ const PredictEvent = () => {
             placeholder="event_creator"
             name="event_creator"
             onChange={onChangeInput}
-            value={dataInput.event_creator}
+            value={dataInput.event_creator?.toString()}
           />
         </div>
       </div>
@@ -191,7 +190,7 @@ const PredictEvent = () => {
             placeholder="token_creator"
             name="token_creator"
             onChange={onChangeInput}
-            value={dataInput.token_creator}
+            value={dataInput.token_creator?.toString()}
             disabled={typeEvent !== "survey-nft"}
           />
         </div>
@@ -236,7 +235,7 @@ const PredictEvent = () => {
         <div className="input-label">Event Options</div>
         <div className="input-field">
           <Input
-            placeholder="event_options"
+            placeholder="Option is separated by commas."
             name="event_options"
             onChange={onChangeInput}
           />

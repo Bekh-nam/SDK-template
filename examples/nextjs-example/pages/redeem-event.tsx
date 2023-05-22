@@ -73,18 +73,18 @@ const RedeemEvent = () => {
     if (typeEvent === "predict") {
       informationSDk
         .redeemPredictEvent(dataInput.name!, dataInput.amount!, coinType)
-        .then((data) => setResult(data));
+        .then((data: any) => setResult(data));
       return;
     }
     if (typeEvent === "survey") {
       informationSDk
         .redeemSurveyEvent(dataInput.name!, coinType)
-        .then((data) => setResult(data));
+        .then((data: any) => setResult(data));
     }
     if (typeEvent === "survey-nft") {
       informationSDk
         .redeemSurveyNFTEvent(dataInput.name!, dataInput.amount!)
-        .then((data) => setResult(data));
+        .then((data: any) => setResult(data));
     }
   };
 
@@ -130,7 +130,7 @@ const RedeemEvent = () => {
             placeholder="collection"
             name="collection"
             disabled={true}
-            value={Constants.COLLECTION}
+            value={Constants.COLLECTION[chainID]}
           />
         </div>
       </div>

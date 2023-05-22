@@ -122,24 +122,22 @@ const CreateEvent = () => {
         });
       }
     }
+    if (e.target.name === "options") {
+      setDataInput((pre: IDataInput) => {
+        const options = e.target.value;
+        return {
+          ...pre,
+          [e.target.name]: [...options.split(",")],
+        };
+      });
+      return;
+    }
     setDataInput((pre: IDataInput) => {
       return {
         ...pre,
         [e.target.name]: e.target.value,
       };
     });
-  };
-
-  const onKeyDown = (e: any) => {
-    if (e.keyCode === 13) {
-      setDataInput((pre: IDataInput) => {
-        return {
-          ...pre,
-          options: [...pre.options!, e.target.value],
-        };
-      });
-      setOption("");
-    }
   };
 
   return (
@@ -210,13 +208,10 @@ const CreateEvent = () => {
         <div className="input-label">Options</div>
         <div className="input-field">
           <Input
-            placeholder="options"
-            name="option"
-            value={option || ""}
-            onKeyDown={onKeyDown}
-            onChange={(e) => setOption(e.target.value)}
+            placeholder="Option is separated by commas."
+            name="options"
+            onChange={onChangeInput}
           />
-          {dataInput.options?.toString()}
         </div>
       </div>
       <div className="input">
