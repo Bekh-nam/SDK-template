@@ -1,6 +1,5 @@
 # SDK for Prediction protocol
 
-[![Discord][discord-image]][discord-url]
 [![NPM Package Version][npm-image-version]][npm-url]
 [![NPM Package Downloads][npm-image-downloads]][npm-url]
 
@@ -69,12 +68,11 @@ To release a new version of the SDK do the following.
     a. Look closely at the output of the command. {ay close attention to what is packaged. Make sure we're not including some files that were included accidentally. For example `.aptos`. Add those to .npmignore if needed.
     b. Compare the summary with the public npm package summary on npmjs. The number of files and sizes should not vary too much.
 9. Run `NODE_AUTH_TOKEN=<token> pnpm checked-publish`
-10. Double check that the release worked by visitng npmjs: https://www.npmjs.com/package/aptos
+10. Double check that the release worked by visitng npmjs: https://www.npmjs.com/package/metaspacecy-evm-sdk
 
 
-[examples]: https://github.com/Bekh-nam/SDK-template.git
-[repo]: https://github.com/Bekh-nam/SDK-template
+[examples]: https://github.com/MetaSpacecy/prediction-evm-sdk.git
+[repo]: https://github.com/MetaSpacecy/prediction-evm-sdk
 [npm-image-version]: https://img.shields.io/npm/v/aptos.svg
 [npm-image-downloads]: https://img.shields.io/npm/dm/aptos.svg
-[npm-url]: https://npmjs.org/package/aptos
-[discord-image]: https://img.shields.io/discord/945856774056083548?label=Discord&logo=discord&style=flat~~~~
+[npm-url]: https://www.npmjs.com/package/metaspacecy-evm-sdk
