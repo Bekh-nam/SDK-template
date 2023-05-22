@@ -1,4 +1,4 @@
-import MetaSpacecySDK from "./metaspacecy";
+import MetaspacecySDK from "./metaspacecy";
 import { Network } from "./types";
 
-export { MetaSpacecySDK, Network };
+export { MetaspacecySDK, Network };
