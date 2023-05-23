@@ -3,22 +3,25 @@
 	"description": "Prediction SDK",
 	"license": "MIT",
 	"engines": {
-		"node": ">=11.0.0"
+		"node": ">=14.0.0"
 	},
-	"main": "./dist/index.js",
-	"module": "./dist/index.mjs",
-	"types": "./dist/index.d.ts",
+	"main": "dist/index.js",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
 	"exports": {
 		".": {
 			"import": "./dist/index.mjs",
 			"require": "./dist/index.js"
 		}
 	},
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"prepack": "pnpm build",
 		"build": "pnpm build:clean && pnpm _build:node && pnpm _build:browser",
 		"build:clean": "rm -rf dist",
-		"_build:browser": "tsup --platform browser --format iife --global-name aptosSDK --minify",
+		"_build:browser": "tsup --platform browser --format iife --global-name metaspacecysdk --minify",
 		"_build:node": "tsup --format cjs,esm --dts",
 		"lint": "eslint \"**/*.ts\"",
 		"test": "jest",
@@ -44,7 +47,7 @@
 		"@ethersproject/bytes": "^5.7.0",
 		"@ethersproject/contracts": "^5.7.0",
 		"@ethersproject/providers": "^5.7.2",
-		"ethers": "5.5.4"
+		"ethers": "5.5.0"
 	},
 	"devDependencies": {
 		"@types/jest": "28.1.8",
@@ -66,5 +69,5 @@
 		"typedoc": "^0.23.20",
 		"typescript": "4.8.2"
 	},
-	"version": "1.5.3"
+	"version": "1.6.11"
 }

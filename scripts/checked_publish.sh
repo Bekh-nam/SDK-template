@@ -13,4 +13,4 @@ cd ..
 . scripts/check.sh
 
 # Finally, publish the package. We assume it has been built
-pnpm publish --non-interactive
+pnpm publish

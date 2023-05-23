@@ -137,6 +137,18 @@ class Prediction {
 		return transactionHash;
 	}
 
+	public getSigner(accountAddress?: string): Signer {
+		if (this.signer) {
+			return this.signer;
+		}
+
+		if (!(this.provider instanceof providers.JsonRpcProvider)) {
+			throw new Error("Either signer or a JsonRpcProvider must be provided");
+		}
+
+		return this.provider.getSigner(accountAddress);
+	}
+
 	private _getSigner(accountAddress?: string): Signer {
 		if (this.signer) {
 			return this.signer;
