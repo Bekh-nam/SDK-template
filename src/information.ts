@@ -144,7 +144,12 @@ const surveyEvent = async (
     type: "entry_function_payload",
     function: `${MOUDLE_ADDRESS[chainID]}::${INFORMATION_MODULE}::survey_event`,
     type_arguments: [type_arguments],
-    arguments: [option, event_creator, `${event_description}?#(${type_arguments})`, event_options],
+    arguments: [
+      option,
+      event_creator,
+      `${event_description}?#(${type_arguments})`,
+      event_options,
+    ],
   };
   return signAndSubmitTransactionCallback(payload);
 };
@@ -198,7 +203,7 @@ const redeemPredictEvent = async (
     type: "entry_function_payload",
     function: `${MOUDLE_ADDRESS[chainID]}::${INFORMATION_MODULE}::redeem_predict_event`,
     type_arguments: [type_arguments],
-    arguments: [RESOURCE_ADDRESS[chainID], COLLECTION, name, amount],
+    arguments: [RESOURCE_ADDRESS[chainID], COLLECTION[chainID], name, amount],
   };
   return signAndSubmitTransactionCallback(payload);
 };
@@ -216,7 +221,7 @@ const redeemSurveyEvent = async (
     type: "entry_function_payload",
     function: `${MOUDLE_ADDRESS[chainID]}::${INFORMATION_MODULE}::redeem_survey_event`,
     type_arguments: [type_arguments],
-    arguments: [RESOURCE_ADDRESS[chainID], COLLECTION, name],
+    arguments: [RESOURCE_ADDRESS[chainID], COLLECTION[chainID], name],
   };
   return signAndSubmitTransactionCallback(payload);
 };
@@ -234,7 +239,7 @@ const redeemSurveyNFTEvent = async (
     type: "entry_function_payload",
     function: `${MOUDLE_ADDRESS[chainID]}::${INFORMATION_MODULE}::redeem_survey_nft_event`,
     type_arguments: [],
-    arguments: [RESOURCE_ADDRESS[chainID], COLLECTION, name, amount],
+    arguments: [RESOURCE_ADDRESS[chainID], [chainID], name, amount],
   };
   return signAndSubmitTransactionCallback(payload);
 };

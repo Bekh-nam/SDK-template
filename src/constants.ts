@@ -12,7 +12,13 @@ export const APTOS_NODE_URL = {
   1: "https://fullnode.mainnet.aptoslabs.com/v1",
   2: "https://fullnode.testnet.aptoslabs.com/v1",
   41: "https://fullnode.devnet.aptoslabs.com/v1",
-}
+};
+export const COLLECTION = {
+  1: "Metaspacecy Prediction Test",
+  2: "Metaspacecy Prediction Test",
+  41: "Metaspacecy Prediction Test",
+};
+
 export const ACCESS_CONTROL_MODULE = "access_control";
 export const SECONDARY_ACCESS_CONTROL_MODULE = "secondary_access_control";
 
@@ -22,9 +28,6 @@ export const PREDICT_MODULE = "prediction";
 export const SURVEY_MODULE = "survey";
 export const SURVEY_NFT_MODULE = "survey_nft";
 
-
-export const DEFAULT_COIN_TYPE= "0x1::aptos_coin::AptosCoin"
+export const DEFAULT_COIN_TYPE = "0x1::aptos_coin::AptosCoin";
 
 export const CONITIONAL_TOKEN = "conditional_token";
-
-export const COLLECTION = "Metaspacecy Prediction Test";

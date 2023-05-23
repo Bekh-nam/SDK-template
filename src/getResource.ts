@@ -84,7 +84,7 @@ export const getSurveyNFTEventByEventID = async (
   creator: HexString,
   description: string,
   options: string[],
-  chainId: IChainID["value"],
+  chainId: IChainID["value"]
 ) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
   const { data }: any = await client.getAccountResource(
@@ -99,9 +99,7 @@ export const getSurveyNFTEventByEventID = async (
       value_type: `${MOUDLE_ADDRESS[chainId]}::${SURVEY_NFT_MODULE}::Event`,
       key: {
         creator,
-        description: `${description}?#${getOptionHashValue(
-          options
-        )}`,
+        description: `${description}?#${getOptionHashValue(options)}`,
       },
     });
     return dataPredict;
@@ -120,7 +118,7 @@ export const getTokenBalance = async (
   const tokenId: any = {
     token_data_id: {
       creator: RESOURCE_ADDRESS[chainId],
-      collection: COLLECTION,
+      collection: COLLECTION[chainId],
       name: itemName,
     },
     property_version: "0",
@@ -142,7 +140,7 @@ export const getTokenForAccount = (
   const tokenId: any = {
     token_data_id: {
       creator: RESOURCE_ADDRESS[chainId],
-      collection: COLLECTION,
+      collection: COLLECTION[chainId],
       name: itemName,
     },
     property_version: "0",
