@@ -33,14 +33,16 @@
 		"type": "git",
 		"url": "https://github.com/MetaSpacecy/prediction-evm-sdk.git"
 	},
-	"homepage": "https://github.com/MetaSpacecy/prediction-evm-sdk.git",
+	"homepage": "https://github.com/MetaSpacecy/prediction-evm-sdk",
 	"bugs": {
 		"url": "https://github.com/MetaSpacecy/prediction-evm-sdk/issues"
 	},
-	"author": "<Bekh-nam <bekhnam2021@gmail.com>",
+	"author": "Bekh-nam <bekhnam2021@gmail.com>, ctdarius <space.sea1611@gmail.com>",
 	"keywords": [
+		"Metaspacecy",
+		"Information",
 		"Prediction",
-		"Move"
+		"EVM"
 	],
 	"dependencies": {
 		"@ethersproject/abi": "^5.7.0",

@@ -9,7 +9,7 @@ cd "$(dirname "$0")"
 cd ..
 
 # Get the latest version of the package on npm.js
-PUBLISHED_VERSION=`npm show metaspacecy-sdk version`
+PUBLISHED_VERSION=`npm show metaspacecy-evm-sdk version`
 
 # Get the version from the local package.json file.
 NEW_VERSION=`node -p -e "require('./package.json').version"`
