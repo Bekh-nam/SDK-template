@@ -1,8 +1,10 @@
 import { Button, Input, Select } from "antd";
 import { useEffect, useMemo, useState } from "react";
-import InformationSDK, { Constants } from "metaspacecy-aptos-prediction";
+import InformationSDK, {
+  Constants,
+  getResource,
+} from "metaspacecy-aptos-prediction";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { getTokenForAccount } from "../../../src/getResource";
 
 interface IDataInput {
   creator: string;
@@ -90,9 +92,9 @@ const RedeemEvent = () => {
 
   useEffect(() => {
     if (dataInput.name) {
-      getTokenForAccount(account?.address!, dataInput.name, chainID).then(
-        (data) => setTokenBalance(+data)
-      );
+      getResource
+        .getTokenForAccount(account?.address!, dataInput.name, chainID)
+        .then((data) => setTokenBalance(+data));
     }
   }, [dataInput.name]);
   return (
@@ -130,7 +132,7 @@ const RedeemEvent = () => {
             placeholder="collection"
             name="collection"
             disabled={true}
-            value={Constants.COLLECTION}
+            value={Constants.COLLECTION[chainID]}
           />
         </div>
       </div>
@@ -148,7 +150,7 @@ const RedeemEvent = () => {
       <div className="input">
         <div className="input-label">Token Amount</div>
         <div className="input-field">
-        <div className="input-tag">Balance: {tokenBalance}</div>
+          <div className="input-tag">Balance: {tokenBalance}</div>
           <Input
             placeholder="amount"
             name="amount"

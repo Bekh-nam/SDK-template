@@ -4,6 +4,7 @@ import InformationSDK, { getResource } from "metaspacecy-aptos-prediction";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Collapse } from "antd";
 import { HexString } from "aptos";
+
 const { Panel } = Collapse;
 
 interface IDataInput {
@@ -39,9 +40,7 @@ const MoreAction = () => {
   };
   const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID);
   const handleAddMember = () => {
-    informationSDk
-      .getOperatorRole()
-      .then((data) => setResult(data));
+    informationSDk.getOperatorRole().then((data) => setResult(data));
   };
   const getEvent = () => {
     if (typeEvent === "predict") {
@@ -72,8 +71,7 @@ const MoreAction = () => {
           dataInput.event_creator!,
           dataInput.event_description!,
           dataInput.event_options!,
-          chainID,
-          coinType
+          chainID
         )
         .then((data) => setResult(data));
     }

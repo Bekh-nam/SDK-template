@@ -7,8 +7,6 @@ import { ErrorAlert, SuccessAlert } from "../components/Alert";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useAutoConnect } from "../components/AutoConnectProvider";
-import Link from "next/link";
-import { Button } from "antd";
 
 const WalletButtons = dynamic(() => import("../components/WalletButtons"), {
   suspense: false,

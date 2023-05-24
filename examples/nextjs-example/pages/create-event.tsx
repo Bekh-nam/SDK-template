@@ -41,7 +41,7 @@ const CreateEvent = () => {
   }, []);
 
   const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID, [
-    "version",
+    "hash",
   ]);
   console.log(informationSDk);
   const handleChangeTypeEvent = (value: string) => {
