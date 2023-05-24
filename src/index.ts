@@ -45,34 +45,28 @@ export default class InformationSDK {
     this.responseField = responseField;
   }
 
-  async signAndSubmitTransaction(
+  signAndSubmitTransaction = async (
     transaction: Types.TransactionPayload,
     options?: any
-  ): Promise<any> {
-    if (this.signAndSubmitTransactionCallback) {
-      const result = await this.signAndSubmitTransactionCallback(
-        transaction,
-        options
+  ): Promise<any> => {
+    const result = await this.signAndSubmitTransaction(transaction, options);
+    if (this.responseField) {
+      return _.reduce(
+        result,
+        (_result: any, value: any, key: string) => {
+          if (this.responseField?.includes(key)) {
+            return {
+              ..._result,
+              [key]: value,
+            };
+          }
+          return _result;
+        },
+        {}
       );
-      if (this.responseField) {
-        return _.reduce(
-          result,
-          (_result: any, value: any, key: string) => {
-            if (this.responseField?.includes(key)) {
-              return {
-                ..._result,
-                [key]: value,
-              };
-            }
-            return _result;
-          },
-          {}
-        );
-      }
-      return result;
     }
-    return {};
-  }
+    return result;
+  };
 
   async getOperatorRole(): Promise<any> {
     return getMemberRole(this.signAndSubmitTransaction, this.chainID);
