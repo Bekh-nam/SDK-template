@@ -1,13 +1,15 @@
-import { Signer, providers, Contract, BigNumber, ContractReceipt } from "ethers";
+import { Signer, providers, Contract, BigNumber } from "ethers";
 import type { PredictionCollateral } from "../../typechain/PredictionCollateral";
 import { PredictionABI } from "../../abi/Prediction";
 import { Network } from "../../types";
 import { NATIVE_ADDRESS, PREDICTION_ADDRESS } from "../../constant";
+import AdminVirtual from "../access/adminVirtual";
 import type { EventDetail, CreatedEventOutput, PredictedEventOutput, ResolveEventOutput, RedeemEventOutput, CancelEventOutput } from "./types";
-
+import type { RegisterOperatorOutput } from "../access/types";
 class Prediction {
 	public contract: PredictionCollateral;
 
+	private network: Network;
 	private provider: providers.Provider;
 	private signer?: Signer;
 
@@ -20,6 +22,7 @@ class Prediction {
 		}
 
 		this.provider = provider;
+		this.network = network;
 
 		this.contract = new Contract(PREDICTION_ADDRESS[network], PredictionABI, this.provider) as unknown as PredictionCollateral;
 	}
@@ -38,6 +41,11 @@ class Prediction {
 			extraTime: +extraTime.toString(),
 			outcomes: outcomes.map((o) => +o.toString()),
 		};
+	}
+
+	public async registerOperator(): Promise<RegisterOperatorOutput> {
+		const adminVirtual = new AdminVirtual(this._getSigner(), this.network);
+		return await adminVirtual.registerOperator();
 	}
 
 	public async createEvent(
