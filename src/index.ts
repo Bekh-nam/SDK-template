@@ -49,26 +49,29 @@ export default class InformationSDK {
     transaction: Types.TransactionPayload,
     options?: any
   ): Promise<any> {
-    const result = await this.signAndSubmitTransactionCallback(
-      transaction,
-      options
-    );
-    if (this.responseField) {
-      return _.reduce(
-        result,
-        (_result: any, value: any, key: string) => {
-          if (this.responseField?.includes(key)) {
-            return {
-              ..._result,
-              [key]: value,
-            };
-          }
-          return _result;
-        },
-        {}
+    if (this.signAndSubmitTransactionCallback) {
+      const result = await this.signAndSubmitTransactionCallback(
+        transaction,
+        options
       );
+      if (this.responseField) {
+        return _.reduce(
+          result,
+          (_result: any, value: any, key: string) => {
+            if (this.responseField?.includes(key)) {
+              return {
+                ..._result,
+                [key]: value,
+              };
+            }
+            return _result;
+          },
+          {}
+        );
+      }
+      return result;
     }
-    return result;
+    return {};
   }
 
   async getOperatorRole(): Promise<any> {
