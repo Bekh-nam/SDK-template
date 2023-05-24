@@ -49,7 +49,10 @@ export default class InformationSDK {
     transaction: Types.TransactionPayload,
     options?: any
   ): Promise<any> => {
-    const result = await this.signAndSubmitTransaction(transaction, options);
+    const result = await this.signAndSubmitTransactionCallback(
+      transaction,
+      options
+    );
     if (this.responseField) {
       return _.reduce(
         result,
