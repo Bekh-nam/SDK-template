@@ -43,10 +43,12 @@
     "@aptos-labs/wallet-adapter-core": "^2.1.0",
     "aptos": "^1.8.5",
     "js-sha256": "^0.9.0",
+    "lodash": "^4.17.21",
     "pnpm": "^8.5.1"
   },
   "devDependencies": {
     "@types/jest": "28.1.8",
+    "@types/lodash": "^4.14.194",
     "@types/node": "18.6.2",
     "@typescript-eslint/eslint-plugin": "5.36.2",
     "@typescript-eslint/parser": "5.36.2",
