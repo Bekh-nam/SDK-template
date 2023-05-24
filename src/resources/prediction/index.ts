@@ -1,4 +1,4 @@
-import { Signer, providers, Contract, BigNumber } from "ethers";
+import { Signer, providers, Contract, BigNumber, ethers } from "ethers";
 import type { PredictionCollateral } from "../../typechain/PredictionCollateral";
 import { PredictionABI } from "../../abi/Prediction";
 import { Network } from "../../types";
@@ -6,6 +6,9 @@ import { NATIVE_ADDRESS, PREDICTION_ADDRESS } from "../../constant";
 import AdminVirtual from "../access/adminVirtual";
 import type { EventDetail, CreatedEventOutput, PredictedEventOutput, ResolveEventOutput, RedeemEventOutput, CancelEventOutput } from "./types";
 import type { RegisterOperatorOutput } from "../access/types";
+import { Erc20Abi } from "../../abi/ERC20";
+import type { ERC20 as ERC20Contract } from "../../typechain/ERC20";
+
 class Prediction {
 	public contract: PredictionCollateral;
 
@@ -77,15 +80,16 @@ class Prediction {
 		};
 	}
 
-	public async predictEvent(eventId: number, option: number, amount: BigNumber, accountAddress?: string): Promise<PredictedEventOutput> {
+	public async predictEvent(eventId: number, option: number, amount: number, accountAddress?: string): Promise<PredictedEventOutput> {
 		const signer: Signer = this._getSigner(accountAddress);
 		const event: EventDetail = await this.getEventDetail(eventId);
+		const amountWei: BigNumber = await this._parseAmountToWei(event.payment, amount);
 		let dataTx;
 		if (event.payment === NATIVE_ADDRESS) {
-			let tx = await this.contract.connect(signer).predictEvent(eventId, option, amount, { value: amount });
+			let tx = await this.contract.connect(signer).predictEvent(eventId, option, 0, { value: amountWei });
 			dataTx = await tx.wait();
 		} else {
-			let tx = await this.contract.connect(signer).predictEvent(eventId, option, amount, { value: 0 });
+			let tx = await this.contract.connect(signer).predictEvent(eventId, option, amountWei, { value: 0 });
 			dataTx = await tx.wait();
 		}
 		const { transactionHash } = dataTx;
@@ -93,7 +97,7 @@ class Prediction {
 			predictor: await signer.getAddress(),
 			eventId,
 			option,
-			amount,
+			amount: amountWei,
 			txHash: transactionHash,
 		};
 	}
@@ -113,15 +117,18 @@ class Prediction {
 		};
 	}
 
-	public async redeemEvent(eventId: number, option: number, amount: BigNumber, accountAddress?: string): Promise<RedeemEventOutput> {
+	public async redeemEvent(eventId: number, option: number, amount: number, accountAddress?: string): Promise<RedeemEventOutput> {
 		const signer: Signer = this._getSigner(accountAddress);
-		const tx = await this.contract.connect(signer).redeemEvent(eventId, option, amount);
+		const event: EventDetail = await this.getEventDetail(eventId);
+		const amountWei: BigNumber = await this._parseAmountToWei(event.payment, amount);
+		const tx = await this.contract.connect(signer).redeemEvent(eventId, option, amountWei);
+
 		const { transactionHash } = await tx.wait();
 		return {
 			predictor: await signer.getAddress(),
 			eventId,
 			option,
-			amount,
+			amount: amountWei,
 			txHash: transactionHash,
 		};
 	}
@@ -167,6 +174,16 @@ class Prediction {
 		}
 
 		return this.provider.getSigner(accountAddress);
+	}
+
+	private async _parseAmountToWei(addressToken: string, amount: number): Promise<BigNumber> {
+		if (addressToken === NATIVE_ADDRESS) {
+			return ethers.utils.parseUnits(amount.toString(), 18);
+		} else {
+			const token = new Contract(addressToken, Erc20Abi, this.provider) as unknown as ERC20Contract;
+			let decimal = await token.decimals();
+			return ethers.utils.parseUnits(amount.toString(), decimal);
+		}
 	}
 }
 
