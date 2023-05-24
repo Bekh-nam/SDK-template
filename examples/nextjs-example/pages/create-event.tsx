@@ -40,8 +40,10 @@ const CreateEvent = () => {
     return 2;
   }, []);
 
-  const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID);
-
+  const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID, [
+    "version",
+  ]);
+  console.log(informationSDk);
   const handleChangeTypeEvent = (value: string) => {
     setTypeEvent(value);
   };
