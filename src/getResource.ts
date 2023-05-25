@@ -161,3 +161,57 @@ export const getMemberOperatorRole = async (chainId: IChainID["value"]) => {
   )[0].value;
   return operator;
 };
+
+export const getServiceFee = async (chainId: IChainID["value"]) => {
+  const client = new AptosClient(APTOS_NODE_URL[chainId]);
+  const { data }: any = await client.getAccountResource(
+    MOUDLE_ADDRESS[chainId],
+    `${MOUDLE_ADDRESS[chainId]}::information_data_factory::Information`
+  );
+  return data.fee_numerator / data.fee_denominator;
+};
+
+export const getOptionPrice = async (
+  creator: HexString,
+  description: string,
+  options: string[],
+  chainId: IChainID["value"],
+  token_name: string
+) => {
+  const event = await getPredictEventByEventID(
+    creator,
+    description,
+    options,
+    chainId
+  );
+  const client = new AptosClient(APTOS_NODE_URL[chainId]);
+  const tokenClient = new TokenClient(client);
+  let totalSupply = 0;
+  const count = options.reduce((a, option) => {
+    const tokenName = [token_name.split("-")[0], [` ${option}`]].join("-");
+
+    tokenClient
+      .getTokenData(RESOURCE_ADDRESS[chainId], COLLECTION[chainId], tokenName)
+      .then((data) => {
+        if (data.supply > 0) {
+          totalSupply += +data.supply;
+          a += 1;
+        }
+      });
+  }, 0);
+
+  if (event?.reward?.value < 100000000 || count < 2) {
+    return 1;
+  }
+  const tokenData = await tokenClient.getTokenData(
+    RESOURCE_ADDRESS[chainId],
+    COLLECTION[chainId],
+    token_name
+  );
+  const initScale = 1 / (options.length - 1);
+  const poolScale = tokenData.supply / (totalSupply - tokenData.supply);
+  const rewardRate = totalSupply / tokenData.supply;
+  const tokenRate =
+    initScale > poolScale ? initScale - poolScale : poolScale - initScale;
+  return (rewardRate / ((rewardRate - 1) * tokenRate + 1)).toFixed(4);
+};
