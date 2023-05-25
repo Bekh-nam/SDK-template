@@ -1,4 +1,4 @@
-import MetaspacecySDK from "./metaspacecy";
+import InformationSDK from "./resources/prediction/index";
 import { Network } from "./types";
 
-export { MetaspacecySDK, Network };
+export { InformationSDK, Network };
