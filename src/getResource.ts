@@ -189,15 +189,16 @@ export const getOptionPrice = async (
   let totalSupply = 0;
   const count = options.reduce((a, option) => {
     const tokenName = [token_name.split("-")[0], [` ${option}`]].join("-");
-
+    let accumulator = a;
     tokenClient
       .getTokenData(RESOURCE_ADDRESS[chainId], COLLECTION[chainId], tokenName)
       .then((data) => {
         if (data.supply > 0) {
           totalSupply += +data.supply;
-          a += 1;
+          accumulator += 1;
         }
       });
+    return accumulator;
   }, 0);
 
   if (event?.reward?.value < 100000000 || count < 2) {
