@@ -28,7 +28,6 @@ export const PREDICT_MODULE = "prediction";
 export const SURVEY_MODULE = "survey";
 export const SURVEY_NFT_MODULE = "survey_nft";
 
-
-export const DEFAULT_COIN_TYPE= "0x1::aptos_coin::AptosCoin"
+export const DEFAULT_COIN_TYPE = "0x1::aptos_coin::AptosCoin";
 
 export const CONITIONAL_TOKEN = "conditional_token";

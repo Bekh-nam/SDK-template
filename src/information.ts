@@ -144,7 +144,12 @@ const surveyEvent = async (
     type: "entry_function_payload",
     function: `${MOUDLE_ADDRESS[chainID]}::${INFORMATION_MODULE}::survey_event`,
     type_arguments: [type_arguments],
-    arguments: [option, event_creator, `${event_description}?#(${type_arguments})`, event_options],
+    arguments: [
+      option,
+      event_creator,
+      `${event_description}?#(${type_arguments})`,
+      event_options,
+    ],
   };
   return signAndSubmitTransactionCallback(payload);
 };

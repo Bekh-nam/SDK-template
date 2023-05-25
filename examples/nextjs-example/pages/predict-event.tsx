@@ -78,7 +78,7 @@ const PredictEvent = () => {
     });
   };
   const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID);
-
+  console.log(informationSDk);
   const handlePredictEvent = () => {
     if (typeEvent === "predict") {
       informationSDk

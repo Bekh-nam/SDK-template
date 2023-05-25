@@ -1,4 +1,5 @@
 import { HexString, Types } from "aptos";
+import _ from "lodash";
 import { getMemberRole } from "./accessControl";
 import * as getResource from "./getResource";
 import {
@@ -24,6 +25,8 @@ import * as Constants from "./constants";
 export default class InformationSDK {
   private chainID: IChainID["value"];
 
+  private responseField?: string[];
+
   private signAndSubmitTransactionCallback: (
     transaction: Types.TransactionPayload,
     options?: any
@@ -34,17 +37,42 @@ export default class InformationSDK {
       transaction: Types.TransactionPayload,
       options?: any
     ) => Promise<any>,
-    chainID: IChainID["value"]
+    chainID: IChainID["value"],
+    responseField?: string[]
   ) {
     this.signAndSubmitTransactionCallback = callBack;
     this.chainID = chainID;
+    this.responseField = responseField;
   }
 
-  async getOperatorRole(): Promise<any> {
-    return getMemberRole(
-      this.signAndSubmitTransactionCallback,
-      this.chainID,
+  signAndSubmitTransaction = async (
+    transaction: Types.TransactionPayload,
+    options?: any
+  ): Promise<any> => {
+    const result = await this.signAndSubmitTransactionCallback(
+      transaction,
+      options
     );
+    if (this.responseField) {
+      return _.reduce(
+        result,
+        (_result: any, value: any, key: string) => {
+          if (this.responseField?.includes(key)) {
+            return {
+              ..._result,
+              [key]: value,
+            };
+          }
+          return _result;
+        },
+        {}
+      );
+    }
+    return result;
+  };
+
+  async getOperatorRole(): Promise<any> {
+    return getMemberRole(this.signAndSubmitTransaction, this.chainID);
   }
 
   async createPredictEvent(
@@ -57,7 +85,7 @@ export default class InformationSDK {
     type_arguments: string
   ): Promise<any> {
     return createPredictEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       description,
       uri,
@@ -80,7 +108,7 @@ export default class InformationSDK {
     type_arguments: string
   ): Promise<any> {
     return createSurveyEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       description,
       uri,
@@ -103,7 +131,7 @@ export default class InformationSDK {
     payout_time: number
   ): Promise<any> {
     return createSurveyNFTEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       description,
       collection,
@@ -124,7 +152,7 @@ export default class InformationSDK {
     type_arguments: string
   ): Promise<any> {
     return predictEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       option,
       amount,
@@ -143,7 +171,7 @@ export default class InformationSDK {
     type_arguments: string
   ): Promise<any> {
     return surveyEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       option,
       event_creator,
@@ -165,7 +193,7 @@ export default class InformationSDK {
     token_version: number
   ): Promise<any> {
     return surveyNFTEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       option,
       amount,
@@ -186,7 +214,7 @@ export default class InformationSDK {
     type_arguments: string
   ): Promise<any> {
     return finalizePredictEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       description,
       options,
@@ -202,7 +230,7 @@ export default class InformationSDK {
     type_arguments: string
   ): Promise<any> {
     return finalizeSurveyEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       description,
       options,
@@ -217,7 +245,7 @@ export default class InformationSDK {
     outcomes: number[]
   ): Promise<any> {
     return finalizeSurveyNFtEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       description,
       options,
@@ -231,7 +259,7 @@ export default class InformationSDK {
     type_arguments: string
   ): Promise<any> {
     return redeemPredictEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       name,
       amount,
@@ -241,7 +269,7 @@ export default class InformationSDK {
 
   async redeemSurveyEvent(name: string, type_arguments: string): Promise<any> {
     return redeemSurveyEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       name,
       type_arguments
@@ -250,7 +278,7 @@ export default class InformationSDK {
 
   async redeemSurveyNFTEvent(name: string, amount: number): Promise<any> {
     return redeemSurveyNFTEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       name,
       amount
@@ -263,7 +291,7 @@ export default class InformationSDK {
     type_arguments: string
   ): Promise<any> {
     return cancelPredictEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       description,
       options,
@@ -277,7 +305,7 @@ export default class InformationSDK {
     type_arguments: string
   ): Promise<any> {
     return cancelSurveyEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       description,
       options,
@@ -290,7 +318,7 @@ export default class InformationSDK {
     options: string[]
   ): Promise<any> {
     return cancelSurveyNFTEvent(
-      this.signAndSubmitTransactionCallback,
+      this.signAndSubmitTransaction,
       this.chainID,
       description,
       options
