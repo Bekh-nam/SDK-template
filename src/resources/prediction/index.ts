@@ -30,6 +30,32 @@ class InformationSDK {
 		this.contract = new Contract(PREDICTION_ADDRESS[network], PredictionABI, this.provider) as unknown as PredictionCollateral;
 	}
 
+	/**
+	 * @return Amount fee native coin of network,that fee creator pay when want to create event.
+	 */
+	public async getEntranceFee(): Promise<number> {
+		const feeWei = await this.contract.entranceFee();
+		return +ethers.utils.formatEther(feeWei);
+	}
+	/**
+	 * @returns Service fee percent will pay for protocol
+	 */
+	public async getServiceFeePercent(): Promise<number> {
+		const percent = await this.contract.SERVICE_FEE();
+		return +percent.toString();
+	}
+	/**
+	 * @returns Number events created
+	 */
+	public async getTotalEvent(): Promise<number> {
+		const total = await this.contract.totalEvent();
+		return +total.toString();
+	}
+	/**
+	 * @abstract get all parameter of a event.
+	 * @param eventId index of event, identifier for that event
+	 * @returns Detail of a event .
+	 */
 	public async getEventDetail(eventId: number): Promise<EventDetail> {
 		const { description, answers, creator, payment, reward, creatorFee, startTime, endTime, extraTime, outcomes } = await this.contract.eventDetail(eventId);
 		return {
@@ -45,12 +71,26 @@ class InformationSDK {
 			outcomes: outcomes.map((o) => +o.toString()),
 		};
 	}
+	/**
+	 * @abstract Register permission to create event.
+	 */
 
 	public async registerOperator(): Promise<RegisterOperatorOutput> {
 		const adminVirtual = new AdminVirtual(this._getSigner(), this.network);
 		return await adminVirtual.registerOperator();
 	}
 
+	/**
+	 * @abstract create a event.
+	 * @param description a question about future events
+	 * @param answers answer for question
+	 * @param payment address token using to participant predict event
+	 * @param creatorFee fee percent pay for creator event
+	 * @param startTime start time event
+	 * @param endTime end time event
+	 * @param accountAddress specific sender transaction
+	 * @returns detail of event created .
+	 */
 	public async createEvent(
 		description: string,
 		answers: Array<string>,
@@ -80,6 +120,14 @@ class InformationSDK {
 		};
 	}
 
+	/**
+	 * @abstract predict a event existed
+	 * @param eventId index of event, identifier for that event
+	 * @param option  index of array answers. Start with zero.
+	 * @param amount  amount token use to predict event
+	 * @param accountAddress specific sender transaction
+	 * @returns detail parameter predicted
+	 */
 	public async predictEvent(eventId: number, option: number, amount: number, accountAddress?: string): Promise<PredictedEventOutput> {
 		const signer: Signer = this._getSigner(accountAddress);
 		const event: EventDetail = await this.getEventDetail(eventId);
@@ -101,7 +149,13 @@ class InformationSDK {
 			txHash: transactionHash,
 		};
 	}
-
+	/**
+	 * @abstract creator set result of event
+	 * @param eventId index of event, identifier for that event
+	 * @param outcomes  array percent of options
+	 * @param accountAddress specific sender transaction
+	 * @returns detail parameter resolved
+	 */
 	public async resolveEvent(eventId: number, outcomes: Array<number>, accountAddress?: string): Promise<ResolveEventOutput> {
 		const signer: Signer = this._getSigner(accountAddress);
 		const tx = await this.contract.connect(signer).resolveEvent(
@@ -116,7 +170,14 @@ class InformationSDK {
 			txHash: transactionHash,
 		};
 	}
-
+	/**
+	 * @abstract user predicted will call to redeem reward if winner
+	 * @param eventId index of event, identifier for that event
+	 * @param option  option user predicted
+	 * @param amount amount user want redeem
+	 * @param accountAddress specific sender transaction
+	 * @returns detail parameter redeem
+	 */
 	public async redeemEvent(eventId: number, option: number, amount: number, accountAddress?: string): Promise<RedeemEventOutput> {
 		const signer: Signer = this._getSigner(accountAddress);
 		const event: EventDetail = await this.getEventDetail(eventId);
@@ -133,6 +194,12 @@ class InformationSDK {
 		};
 	}
 
+	/**
+	 * @abstract creator can cancel event if event not started yet
+	 * @param eventId index of event, identifier for that event
+	 * @param accountAddress specific sender transaction
+	 * @returns detail parameter cancel
+	 */
 	public async cancelEvent(eventId: number, accountAddress?: string): Promise<CancelEventOutput> {
 		const signer: Signer = this._getSigner(accountAddress);
 		const tx = await this.contract.connect(signer).cancelEvent(eventId);
@@ -145,6 +212,10 @@ class InformationSDK {
 		};
 	}
 
+	/**
+	 * @abstract only admin can change entrance fee
+	 * @param amount new amount entrance fee
+	 */
 	public async updateEntranceFee(amount: BigNumber, accountAddress?: string): Promise<string> {
 		const signer: Signer = this._getSigner(accountAddress);
 		const tx = await this.contract.connect(signer).updateEntranceFee(amount);
