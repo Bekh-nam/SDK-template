@@ -75,6 +75,13 @@ export default class InformationSDK {
     return getMemberRole(this.signAndSubmitTransaction, this.chainID);
   }
 
+  // description: The event description has a data type of string.
+  // uri: The event media
+  // options: The event options has a data type of array.
+  // startTime: The event start time
+  // endTime: The event end time
+  // payoutTime: The redemption time for users after the event ends
+  // coinType: The event coin type
   async createPredictEvent(
     description: string,
     uri: string,
@@ -97,6 +104,14 @@ export default class InformationSDK {
     );
   }
 
+  // description: The event description has a data type of string.
+  // uri: The event media
+  // reward: The event reward
+  // options: The event options has a data type of array.
+  // startTime: The event start time
+  // endTime: The event end time
+  // payoutTime: The redemption time for users after the event ends
+  // coinType: The event coin type
   async createSuyveyEvent(
     description: string,
     uri: string,
@@ -121,6 +136,14 @@ export default class InformationSDK {
     );
   }
 
+  // description: The event description has a data type of string.
+  // collection: The event collection name
+  // uri: The event media
+  // options: The event options has a data type of array.
+  // startTime: The event start time
+  // endTime: The event end time
+  // payoutTime: The redemption time for users after the event ends
+  // coinType: The event coin type
   async createSuyveyNFTEvent(
     description: string,
     collection: string,
@@ -143,6 +166,8 @@ export default class InformationSDK {
     );
   }
 
+  // option: your option
+  // amount: Number of options
   async predictEvent(
     option: string,
     amount: number,
@@ -163,6 +188,7 @@ export default class InformationSDK {
     );
   }
 
+  // option: your option
   async surveyEvent(
     option: string,
     event_creator: HexString,
@@ -180,6 +206,13 @@ export default class InformationSDK {
       type_arguments
     );
   }
+
+  // option: your option
+  // amount: Number of options
+  // token_creator: token creator
+  // collection: token collection
+  // token_name: token name
+  // token_version: token properties version
 
   async surveyNFTEvent(
     option: string,
@@ -207,6 +240,8 @@ export default class InformationSDK {
     );
   }
 
+  // The length of outcomes must be equal to the length of options.
+  // outcomes is an array of numbers
   async finalizePredictEvent(
     description: string,
     options: string[],
@@ -253,6 +288,7 @@ export default class InformationSDK {
     );
   }
 
+  // name is the name of the token that users receive when they make a prediction
   async redeemPredictEvent(
     name: string,
     amount: number,
