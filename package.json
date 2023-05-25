@@ -1,6 +1,6 @@
 {
-	"name": "metaspacecy-sdk",
-	"description": "Prediction SDK",
+	"name": "information-sdk-evm",
+	"description": "Information SDK EVM",
 	"license": "MIT",
 	"engines": {
 		"node": ">=14.0.0"
