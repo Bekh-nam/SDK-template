@@ -12,6 +12,10 @@ const prediction = new InformationSDK(signer, Network.bnbTestnet);
 
 //console.log("prediction:::", prediction.contract["INVERSE_BASIS_POINT()"]);
 
+prediction.getEntranceFee().then((result) => {
+	console.log("result:::::", result);
+});
+
 // prediction.getEventDetail(1).then((result) => {
 // 	console.log("result:::::", result);
 // });

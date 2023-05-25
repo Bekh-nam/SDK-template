@@ -9,7 +9,7 @@ node_modules
 .idea/
 .history/
 .vscode/
-dist/
+# dist/
 .nyc_output/
 build/
 
