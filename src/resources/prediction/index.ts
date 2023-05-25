@@ -9,7 +9,7 @@ import type { RegisterOperatorOutput } from "../access/types";
 import { Erc20Abi } from "../../abi/ERC20";
 import type { ERC20 as ERC20Contract } from "../../typechain/ERC20";
 
-class Prediction {
+class InformationSDK {
 	public contract: PredictionCollateral;
 
 	private network: Network;
@@ -187,4 +187,4 @@ class Prediction {
 	}
 }
 
-export default Prediction;
+export default InformationSDK;
