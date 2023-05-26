@@ -8,6 +8,7 @@ import type { EventDetail, CreatedEventOutput, PredictedEventOutput, ResolveEven
 import type { RegisterOperatorOutput } from "../access/types";
 import { Erc20Abi } from "../../abi/ERC20";
 import type { ERC20 as ERC20Contract } from "../../typechain/ERC20";
+import { getEventIdsOfCreatorFromBlock, getEventIdsOfUserPredictedFromBlock } from "../../utils/thirdPartyHelper";
 
 class InformationSDK {
 	public contract: PredictionCollateral;
@@ -52,9 +53,9 @@ class InformationSDK {
 		return +total.toString();
 	}
 	/**
-	 * @abstract get all parameter of a event.
+	 * @abstract get all parameter of a event
 	 * @param eventId index of event, identifier for that event
-	 * @returns Detail of a event .
+	 * @returns Detail of a event
 	 */
 	public async getEventDetail(eventId: number): Promise<EventDetail> {
 		const { description, answers, creator, payment, reward, creatorFee, startTime, endTime, extraTime, outcomes } = await this.contract.eventDetail(eventId);
@@ -72,9 +73,37 @@ class InformationSDK {
 		};
 	}
 	/**
+	 * @abstract get all events of creator created
+	 * @param creatorAddress address of creator
+	 * @param apiKey api key of network, can get in scan of network
+	 * @returns array events detail
+	 */
+	public async getEventsOfCreator(creatorAddress: string, apiKey: string): Promise<Array<EventDetail>> {
+		const eventIds = await getEventIdsOfCreatorFromBlock(this.network, apiKey, creatorAddress);
+
+		return Promise.all(
+			eventIds.map(async (id: number) => {
+				return await this.getEventDetail(id);
+			})
+		);
+	}
+	/**
+	 * @abstract get all events of user predicted
+	 * @param userAddress address of user
+	 * @param apiKey api key of network, can get in scan of network
+	 * @returns array events detail
+	 */
+	public async getEventsOfUserPredicted(userAddress: string, apiKey: string): Promise<Array<EventDetail>> {
+		const eventIds = await getEventIdsOfUserPredictedFromBlock(this.network, apiKey, userAddress);
+		return Promise.all(
+			eventIds.map(async (id: number) => {
+				return await this.getEventDetail(id);
+			})
+		);
+	}
+	/**
 	 * @abstract Register permission to create event.
 	 */
-
 	public async registerOperator(): Promise<RegisterOperatorOutput> {
 		const adminVirtual = new AdminVirtual(this._getSigner(), this.network);
 		return await adminVirtual.registerOperator();

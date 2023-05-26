@@ -1,5 +1,5 @@
 // src/resources/prediction/index.ts
-import { providers, Contract as Contract2, ethers } from "ethers";
+import { providers, Contract as Contract2, ethers as ethers2 } from "ethers";
 
 // src/abi/Prediction.ts
 var PredictionABI = [
@@ -221,7 +221,7 @@ var PredictionABI = [
 
 // src/constant.ts
 var PREDICTION_ADDRESS = {
-  97: "0x34183b75A30fFA12ee5c0d97F951F6e7F468Cd22",
+  97: "0x12CB90e52054B2D41D7cbEc4989f005dCaCec6a0",
   56: ""
 };
 var ADMIN_VIRTUAL_ADDRESS = {
@@ -229,6 +229,10 @@ var ADMIN_VIRTUAL_ADDRESS = {
   56: ""
 };
 var NATIVE_ADDRESS = "0x0000000000000000000000000000000000000000";
+var ENDPOINT_API = {
+  97: "https://api-testnet.bscscan.com",
+  56: "https://api.bscscan.com"
+};
 
 // src/resources/access/adminVirtual.ts
 import { Contract } from "ethers";
@@ -559,6 +563,40 @@ var Erc20Abi = [
   }
 ];
 
+// src/utils/thirdPartyHelper.ts
+import axios from "axios";
+import { ethers } from "ethers";
+var getEventIdsOfCreatorFromBlock = async (network, apiKey, creatorAddress) => {
+  var _a;
+  const { data } = await axios({
+    method: "get",
+    url: `${ENDPOINT_API[network]}/api?module=logs&action=getLogs&address=${PREDICTION_ADDRESS[network]}&topic2=0x000000000000000000000000${creatorAddress.slice(2)}&apikey=${apiKey}`
+  });
+  const iface = new ethers.utils.Interface(PredictionABI);
+  const eventsOfCreator = (_a = data == null ? void 0 : data.result) == null ? void 0 : _a.map((e) => iface.decodeEventLog("CreatedEvent", e.data, e.topics));
+  return eventsOfCreator == null ? void 0 : eventsOfCreator.map((e) => {
+    let { eventId } = e;
+    return +eventId.toString();
+  });
+};
+var getEventIdsOfUserPredictedFromBlock = async (network, apiKey, userAddress) => {
+  var _a;
+  const iface = new ethers.utils.Interface(PredictionABI);
+  const { data } = await axios({
+    method: "get",
+    url: `${ENDPOINT_API[network]}/api?module=logs&action=getLogs&address=${PREDICTION_ADDRESS[network]}&topic0=${iface.getEventTopic(
+      "PredictedEvent"
+    )}&topic0_1_opr=and&topic1=0x000000000000000000000000${userAddress.slice(2)}&apikey=${apiKey}`
+  });
+  const eventsOfUserPredicted = (_a = data == null ? void 0 : data.result) == null ? void 0 : _a.map((e) => iface.decodeEventLog("PredictedEvent", e.data, e.topics));
+  let eventIds = eventsOfUserPredicted == null ? void 0 : eventsOfUserPredicted.map((e) => {
+    let { eventId } = e;
+    return +eventId.toString();
+  });
+  eventIds = new Set(eventIds);
+  return Array.from(eventIds);
+};
+
 // src/resources/prediction/index.ts
 var InformationSDK = class {
   constructor(providerOrSigner, network) {
@@ -573,7 +611,7 @@ var InformationSDK = class {
   }
   async getEntranceFee() {
     const feeWei = await this.contract.entranceFee();
-    return +ethers.utils.formatEther(feeWei);
+    return +ethers2.utils.formatEther(feeWei);
   }
   async getServiceFeePercent() {
     const percent = await this.contract.SERVICE_FEE();
@@ -597,6 +635,22 @@ var InformationSDK = class {
       extraTime: +extraTime.toString(),
       outcomes: outcomes.map((o) => +o.toString())
     };
+  }
+  async getEventsOfCreator(creatorAddress, apiKey) {
+    const eventIds = await getEventIdsOfCreatorFromBlock(this.network, apiKey, creatorAddress);
+    return Promise.all(
+      eventIds.map(async (id) => {
+        return await this.getEventDetail(id);
+      })
+    );
+  }
+  async getEventsOfUserPredicted(userAddress, apiKey) {
+    const eventIds = await getEventIdsOfUserPredictedFromBlock(this.network, apiKey, userAddress);
+    return Promise.all(
+      eventIds.map(async (id) => {
+        return await this.getEventDetail(id);
+      })
+    );
   }
   async registerOperator() {
     const adminVirtual = new AdminVirtual(this._getSigner(), this.network);
@@ -706,11 +760,11 @@ var InformationSDK = class {
   }
   async _parseAmountToWei(addressToken, amount) {
     if (addressToken === NATIVE_ADDRESS) {
-      return ethers.utils.parseUnits(amount.toString(), 18);
+      return ethers2.utils.parseUnits(amount.toString(), 18);
     } else {
       const token = new Contract2(addressToken, Erc20Abi, this.provider);
       let decimal = await token.decimals();
-      return ethers.utils.parseUnits(amount.toString(), decimal);
+      return ethers2.utils.parseUnits(amount.toString(), decimal);
     }
   }
 };

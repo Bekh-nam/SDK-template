@@ -966,11 +966,25 @@ declare class InformationSDK {
      */
     getTotalEvent(): Promise<number>;
     /**
-     * @abstract get all parameter of a event.
+     * @abstract get all parameter of a event
      * @param eventId index of event, identifier for that event
-     * @returns Detail of a event .
+     * @returns Detail of a event
      */
     getEventDetail(eventId: number): Promise<EventDetail>;
+    /**
+     * @abstract get all events of creator created
+     * @param creatorAddress address of creator
+     * @param apiKey api key of network, can get in scan of network
+     * @returns array events detail
+     */
+    getEventsOfCreator(creatorAddress: string, apiKey: string): Promise<Array<EventDetail>>;
+    /**
+     * @abstract get all events of user predicted
+     * @param userAddress address of user
+     * @param apiKey api key of network, can get in scan of network
+     * @returns array events detail
+     */
+    getEventsOfUserPredicted(userAddress: string, apiKey: string): Promise<Array<EventDetail>>;
     /**
      * @abstract Register permission to create event.
      */

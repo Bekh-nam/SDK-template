@@ -12,9 +12,9 @@ const prediction = new InformationSDK(signer, Network.bnbTestnet);
 
 //console.log("prediction:::", prediction.contract["INVERSE_BASIS_POINT()"]);
 
-prediction.getEntranceFee().then((result) => {
-	console.log("result:::::", result);
-});
+// prediction.getEntranceFee().then((result) => {
+// 	console.log("result:::::", result);
+// });
 
 // prediction.getEventDetail(1).then((result) => {
 // 	console.log("result:::::", result);
@@ -39,3 +39,11 @@ prediction.getEntranceFee().then((result) => {
 // prediction.registerOperator().then((result) => {
 // 	console.log("result:::", result);
 // });
+
+// prediction.getEventsOfCreator("0x5A5316f2619BF119c2FB2230669b1A4c5a707279", "BYM1NKMDBPB2BB8NKQW2EK52TQFKVY62QI").then((result) => {
+// 	console.log("result::::", result);
+// });
+
+prediction.getEventsOfUserPredicted("0x5A5316f2619BF119c2FB2230669b1A4c5a707279", "BYM1NKMDBPB2BB8NKQW2EK52TQFKVY62QI").then((result) => {
+	console.log("result::::", result);
+});
