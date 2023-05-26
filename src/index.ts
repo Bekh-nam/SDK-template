@@ -8,6 +8,7 @@ import {
 import _, { isString } from "lodash";
 import { getMemberRole } from "./accessControl";
 import * as getResource from "./getResource";
+import * as services from "./services";
 import {
   cancelPredictEvent,
   cancelSurveyEvent,
@@ -406,4 +407,4 @@ export default class InformationSDK {
     );
   }
 }
-export { getResource, Constants };
+export { getResource, Constants, services };
