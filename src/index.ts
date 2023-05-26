@@ -1,5 +1,11 @@
-import { HexString, Types } from "aptos";
-import _ from "lodash";
+import {
+  AptosAccount,
+  AptosClient,
+  HexString,
+  TransactionBuilderRemoteABI,
+  Types,
+} from "aptos";
+import _, { isString } from "lodash";
 import { getMemberRole } from "./accessControl";
 import * as getResource from "./getResource";
 import {
@@ -25,34 +31,65 @@ import * as Constants from "./constants";
 export default class InformationSDK {
   private chainID: IChainID["value"];
 
+  private privateKey?: HexString;
+
   private responseField?: string[];
 
-  private signAndSubmitTransactionCallback: (
+  private signAndSubmitTransactionCallback?: (
     transaction: Types.TransactionPayload,
     options?: any
   ) => Promise<any>;
 
+  // ChainID of the network used by the user
+  // responseField is an array of values that the user wants to return after using the signAndSubmitTransaction function
+  // example ["hash"] => result {hash: ...}
+  // callBack: is signAndSubmitTransaction function of wallet adapter
+  // if you don't have wallet adapter you can use private key
   constructor(
-    callBack: (
-      transaction: Types.TransactionPayload,
-      options?: any
-    ) => Promise<any>,
     chainID: IChainID["value"],
+    callBack?:
+      | ((transaction: Types.TransactionPayload, options?: any) => Promise<any>)
+      | string,
     responseField?: string[]
   ) {
-    this.signAndSubmitTransactionCallback = callBack;
+    if (isString(callBack)) {
+      this.privateKey = new HexString(callBack);
+    } else {
+      this.signAndSubmitTransactionCallback = callBack;
+    }
+
     this.chainID = chainID;
     this.responseField = responseField;
   }
 
   signAndSubmitTransaction = async (
-    transaction: Types.TransactionPayload,
+    transaction: any,
     options?: any
   ): Promise<any> => {
-    const result = await this.signAndSubmitTransactionCallback(
-      transaction,
-      options
-    );
+    let result;
+    if (this.privateKey) {
+      const aptosClient = new AptosClient(
+        Constants.APTOS_NODE_URL[this.chainID]
+      );
+
+      const sender = new AptosAccount(this.privateKey.toUint8Array());
+      const builder = new TransactionBuilderRemoteABI(aptosClient, {
+        sender: sender.address(),
+        ...options,
+      });
+      const rawTxn = await builder.build(
+        transaction.function,
+        transaction.type_arguments,
+        transaction.arguments
+      );
+      const sign = await aptosClient.signTransaction(sender, rawTxn);
+      result = await aptosClient.submitTransaction(sign);
+    } else if (this.signAndSubmitTransactionCallback) {
+      result = await this.signAndSubmitTransactionCallback(
+        transaction,
+        options
+      );
+    }
     if (this.responseField) {
       return _.reduce(
         result,
@@ -213,7 +250,6 @@ export default class InformationSDK {
   // collection: token collection
   // token_name: token name
   // token_version: token properties version
-
   async surveyNFTEvent(
     option: string,
     amount: number,
@@ -242,6 +278,7 @@ export default class InformationSDK {
 
   // The length of outcomes must be equal to the length of options.
   // outcomes is an array of numbers
+  // outcomes is the event result
   async finalizePredictEvent(
     description: string,
     options: string[],
@@ -258,6 +295,9 @@ export default class InformationSDK {
     );
   }
 
+  // The length of outcomes must be equal to the length of options.
+  // outcomes is an array of numbers
+  // outcomes is the event result
   async finalizeSurveyEvent(
     description: string,
     options: string[],
@@ -274,6 +314,9 @@ export default class InformationSDK {
     );
   }
 
+  // The length of outcomes must be equal to the length of options.
+  // outcomes is an array of numbers
+  // outcomes is the event result
   async finalizeSurveyNFTEvent(
     description: string,
     options: string[],
@@ -303,6 +346,7 @@ export default class InformationSDK {
     );
   }
 
+  // name is the name of the token that users receive when they make a prediction
   async redeemSurveyEvent(name: string, type_arguments: string): Promise<any> {
     return redeemSurveyEvent(
       this.signAndSubmitTransaction,
@@ -312,6 +356,7 @@ export default class InformationSDK {
     );
   }
 
+  // name is the name of the token that users receive when they make a prediction
   async redeemSurveyNFTEvent(name: string, amount: number): Promise<any> {
     return redeemSurveyNFTEvent(
       this.signAndSubmitTransaction,

@@ -1,7 +1,8 @@
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Button, DatePicker, DatePickerProps, Input, Select } from "antd";
-import InformationSDK from "metaspacecy-aptos-prediction";
+import InformationSDK from "../../../src/index";
 import { useMemo, useState } from "react";
+import { HexString } from "aptos";
 
 interface IDataInput {
   description?: string;
@@ -16,6 +17,9 @@ interface IDataInput {
 const CreateEvent = () => {
   const { network, signAndSubmitTransaction } = useWallet();
   const [result, setResult] = useState();
+  const [privateKey, setPrivateKey] = useState<string>(
+    "0xe19be26e54ebdcacd485422452b74de8e374e65795413f358dc199058088ba50"
+  );
   const [option, setOption] = useState<string>();
   const [typeEvent, setTypeEvent] = useState("predict");
   const [coinType, setCoinType] = useState("0x1::aptos_coin::AptosCoin");
@@ -40,9 +44,7 @@ const CreateEvent = () => {
     return 2;
   }, []);
 
-  const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID, [
-    "hash",
-  ]);
+  const informationSDk = new InformationSDK(chainID, privateKey);
   console.log(informationSDk);
   const handleChangeTypeEvent = (value: string) => {
     setTypeEvent(value);

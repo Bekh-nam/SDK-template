@@ -5,7 +5,7 @@ import {
   DEFAULT_COIN_TYPE,
   INFORMATION_DATA_MODULE,
   INFORMATION_MODULE,
-  MOUDLE_ADDRESS,
+  MODULE_ADDRESS,
   PREDICT_MODULE,
   RESOURCE_ADDRESS,
   SURVEY_MODULE,
@@ -14,6 +14,11 @@ import {
 import { IChainID } from "./types";
 import { getOptionHashValue } from "./utils";
 
+// creator : the event creator
+// description: The event description has a data type of string.
+// options: The event options has a data type of array.
+// chainId: The network chainId
+// coinType: The event coin type
 export const getPredictEventByEventID = async (
   creator: HexString,
   description: string,
@@ -23,22 +28,21 @@ export const getPredictEventByEventID = async (
 ) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
   const { data }: any = await client.getAccountResource(
-    MOUDLE_ADDRESS[chainId],
-    `${MOUDLE_ADDRESS[chainId]}::${PREDICT_MODULE}::Prediction<${coinType}>`
+    MODULE_ADDRESS[chainId],
+    `${MODULE_ADDRESS[chainId]}::${PREDICT_MODULE}::Prediction<${coinType}>`
   );
   const { handle } = data.all_events;
 
-  //   await new Promise((resolve) => setTimeout(resolve, 1000))
-
   try {
     const dataPredict = await client.getTableItem(handle, {
-      key_type: `${MOUDLE_ADDRESS[chainId]}::${INFORMATION_DATA_MODULE}::EventID`,
-      value_type: `${MOUDLE_ADDRESS[chainId]}::${PREDICT_MODULE}::Event<${coinType}>`,
+      key_type: `${MODULE_ADDRESS[chainId]}::${INFORMATION_DATA_MODULE}::EventID`,
+      value_type: `${MODULE_ADDRESS[chainId]}::${PREDICT_MODULE}::Event<${coinType}>`,
       key: {
         creator,
-        description: `${description}?#(${coinType})?#${getOptionHashValue(
-          options
-        )}`,
+        description:
+          options.length !== 0
+            ? `${description}?#(${coinType})?#${getOptionHashValue(options)}`
+            : description,
       },
     });
     return dataPredict;
@@ -47,6 +51,11 @@ export const getPredictEventByEventID = async (
   }
 };
 
+// creator : the event creator
+// description: The event description has a data type of string.
+// options: The event options has a data type of array.
+// chainId: The network chainId
+// coinType: The event coin type
 export const getSurveyEventByEventID = async (
   creator: HexString,
   description: string,
@@ -56,8 +65,8 @@ export const getSurveyEventByEventID = async (
 ) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
   const { data }: any = await client.getAccountResource(
-    MOUDLE_ADDRESS[chainId],
-    `${MOUDLE_ADDRESS[chainId]}::${SURVEY_MODULE}::Survey<${coinType}>`
+    MODULE_ADDRESS[chainId],
+    `${MODULE_ADDRESS[chainId]}::${SURVEY_MODULE}::Survey<${coinType}>`
   );
   const { handle } = data.all_events;
 
@@ -65,13 +74,14 @@ export const getSurveyEventByEventID = async (
 
   try {
     const dataPredict = await client.getTableItem(handle, {
-      key_type: `${MOUDLE_ADDRESS[chainId]}::${INFORMATION_MODULE}::EventID`,
-      value_type: `${MOUDLE_ADDRESS[chainId]}::${SURVEY_MODULE}::Event<${coinType}>`,
+      key_type: `${MODULE_ADDRESS[chainId]}::${INFORMATION_MODULE}::EventID`,
+      value_type: `${MODULE_ADDRESS[chainId]}::${SURVEY_MODULE}::Event<${coinType}>`,
       key: {
         creator,
-        description: `${description}?#(${coinType})?#${getOptionHashValue(
-          options
-        )}`,
+        description:
+          options.length !== 0
+            ? `${description}?#(${coinType})?#${getOptionHashValue(options)}`
+            : description,
       },
     });
     return dataPredict;
@@ -80,6 +90,10 @@ export const getSurveyEventByEventID = async (
   }
 };
 
+// creator : the event creator
+// description: The event description has a data type of string.
+// options: The event options has a data type of array.
+// chainId: The network chainId
 export const getSurveyNFTEventByEventID = async (
   creator: HexString,
   description: string,
@@ -88,18 +102,21 @@ export const getSurveyNFTEventByEventID = async (
 ) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
   const { data }: any = await client.getAccountResource(
-    MOUDLE_ADDRESS[chainId],
-    `${MOUDLE_ADDRESS[chainId]}::${SURVEY_NFT_MODULE}::SurveyNft`
+    MODULE_ADDRESS[chainId],
+    `${MODULE_ADDRESS[chainId]}::${SURVEY_NFT_MODULE}::SurveyNft`
   );
   const { handle } = data.all_events;
 
   try {
     const dataPredict = await client.getTableItem(handle, {
-      key_type: `${MOUDLE_ADDRESS[chainId]}::${INFORMATION_MODULE}::EventID`,
-      value_type: `${MOUDLE_ADDRESS[chainId]}::${SURVEY_NFT_MODULE}::Event`,
+      key_type: `${MODULE_ADDRESS[chainId]}::${INFORMATION_MODULE}::EventID`,
+      value_type: `${MODULE_ADDRESS[chainId]}::${SURVEY_NFT_MODULE}::Event`,
       key: {
         creator,
-        description: `${description}?#${getOptionHashValue(options)}`,
+        description:
+          options.length !== 0
+            ? `${description}?#${getOptionHashValue(options)}`
+            : description,
       },
     });
     return dataPredict;
@@ -153,8 +170,8 @@ export const getTokenForAccount = (
 export const getMemberOperatorRole = async (chainId: IChainID["value"]) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
   const { data }: any = await client.getAccountResource(
-    MOUDLE_ADDRESS[chainId],
-    `${MOUDLE_ADDRESS[chainId]}::access_control::AccessControl`
+    MODULE_ADDRESS[chainId],
+    `${MODULE_ADDRESS[chainId]}::access_control::AccessControl`
   );
   const operator = data.role.data.filter(
     (item: any) => item.key === "Operator"
@@ -165,8 +182,8 @@ export const getMemberOperatorRole = async (chainId: IChainID["value"]) => {
 export const getServiceFee = async (chainId: IChainID["value"]) => {
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
   const { data }: any = await client.getAccountResource(
-    MOUDLE_ADDRESS[chainId],
-    `${MOUDLE_ADDRESS[chainId]}::information_data_factory::Information`
+    MODULE_ADDRESS[chainId],
+    `${MODULE_ADDRESS[chainId]}::information_data_factory::Information`
   );
   return data.fee_numerator / data.fee_denominator;
 };
@@ -187,20 +204,21 @@ export const getOptionPrice = async (
   const client = new AptosClient(APTOS_NODE_URL[chainId]);
   const tokenClient = new TokenClient(client);
   let totalSupply = 0;
-  const count = options.reduce((a, option) => {
-    const tokenName = [token_name.split("-")[0], [` ${option}`]].join("-");
-    let accumulator = a;
-    tokenClient
-      .getTokenData(RESOURCE_ADDRESS[chainId], COLLECTION[chainId], tokenName)
-      .then((data) => {
-        if (data.supply > 0) {
-          totalSupply += +data.supply;
-          accumulator += 1;
-        }
-      });
-    return accumulator;
-  }, 0);
-
+  let count = 0;
+  await Promise.all(
+    options.map(async (option) => {
+      const tokenName = `${token_name.split("-")[0]}- ${option}`;
+      const tokenData = await tokenClient.getTokenData(
+        RESOURCE_ADDRESS[chainId],
+        COLLECTION[chainId],
+        tokenName
+      );
+      if (tokenData.supply > 0) {
+        totalSupply += Number(tokenData.supply);
+        count += 1;
+      }
+    })
+  );
   if (event?.reward?.value < 100000000 || count < 2) {
     return 1;
   }

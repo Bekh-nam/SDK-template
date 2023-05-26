@@ -1,10 +1,11 @@
 import { Button, Input, Select } from "antd";
 import { useMemo, useState } from "react";
-import InformationSDK, { getResource } from "metaspacecy-aptos-prediction";
+import InformationSDK, { getResource } from "../../../src/index";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Collapse } from "antd";
 import { HexString } from "aptos";
 import { getOptionPrice, getServiceFee } from "../../../src/getResource";
+import { getEventByCreator, getJoinedEvent } from "../../../src/services";
 const { Panel } = Collapse;
 
 interface IDataInput {
@@ -12,11 +13,13 @@ interface IDataInput {
   event_description?: string;
   event_options?: string[];
   token_name?: string;
+  predictor?: string;
 }
 const MoreAction = () => {
   const { network, signAndSubmitTransaction } = useWallet();
   const [result, setResult] = useState();
   const [price, setPrice] = useState<number>();
+  const [events, setEvent] = useState();
 
   const [typeEvent, setTypeEvent] = useState("predict");
   const [serviceFee, setServiceFee] = useState(0);
@@ -43,7 +46,7 @@ const MoreAction = () => {
   const handleChangeCoinType = (value: string) => {
     setCoinType(value);
   };
-  const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID);
+  const informationSDk = new InformationSDK(chainID, signAndSubmitTransaction);
   const handleAddMember = () => {
     informationSDk.getOperatorRole().then((data) => setResult(data));
   };
@@ -111,7 +114,16 @@ const MoreAction = () => {
       chainID,
       dataInput.token_name
     );
-    setPrice(price);
+    setPrice(+price);
+  };
+  const getEventByCreatorAddress = async () => {
+    const event = await getEventByCreator(dataInput.event_creator, chainID);
+    setEvent(event);
+  };
+
+  const getEventJoined = async () => {
+    const event = await getJoinedEvent(dataInput.predictor, chainID);
+    setEvent(event);
   };
   return (
     <div className="container">
@@ -250,6 +262,47 @@ const MoreAction = () => {
           {price}
         </Panel>
       </Collapse>
+      <Collapse>
+        <Panel header="Get Event By Creator" key="1">
+          <div className="input">
+            <div className="input-label">Event creator</div>
+            <div className="input-field">
+              <Input
+                placeholder="event_creator"
+                name="event_creator"
+                onChange={onChangeInput}
+                value={
+                  dataInput.event_creator?.toString()
+                    ? dataInput.event_creator.toString()
+                    : ""
+                }
+              />
+            </div>
+          </div>
+          <Button onClick={getEventByCreatorAddress}>Get</Button>
+        </Panel>
+      </Collapse>
+      <Collapse>
+        <Panel header="Get joined events" key="1">
+          <div className="input">
+            <div className="input-label">Predictor</div>
+            <div className="input-field">
+              <Input
+                placeholder="predictor"
+                name="predictor"
+                onChange={onChangeInput}
+                value={
+                  dataInput.predictor?.toString()
+                    ? dataInput.predictor.toString()
+                    : ""
+                }
+              />
+            </div>
+          </div>
+          <Button onClick={getEventJoined}>Get</Button>
+        </Panel>
+      </Collapse>
+      {events && <div>{JSON.stringify(events)}</div>}
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import InformationSDK, {
   Constants,
   getResource,
-} from "metaspacecy-aptos-prediction";
+} from "@metaspacecy/information-sdk/move";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 interface IDataInput {

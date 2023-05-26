@@ -1,8 +1,7 @@
 import { Button, Input, Select } from "antd";
 import { useMemo, useState } from "react";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import InformationSDK from "metaspacecy-aptos-prediction";
-
+import InformationSDK from "@metaspacecy/information-sdk/move";
 
 interface IDataInput {
   event_description?: string;
