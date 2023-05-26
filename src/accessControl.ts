@@ -1,9 +1,6 @@
 // import { AptosClient } from "aptos"
 import { Types } from "aptos";
-import {
-  MOUDLE_ADDRESS,
-  SECONDARY_ACCESS_CONTROL_MODULE,
-} from "./constants";
+import { MODULE_ADDRESS, SECONDARY_ACCESS_CONTROL_MODULE } from "./constants";
 import { IChainID } from "./types";
 
 const getMemberRole = async (
@@ -15,7 +12,7 @@ const getMemberRole = async (
 ) => {
   const payload: Types.TransactionPayload = {
     type: "entry_function_payload",
-    function: `${MOUDLE_ADDRESS[chainId]}::${SECONDARY_ACCESS_CONTROL_MODULE}::get_role`,
+    function: `${MODULE_ADDRESS[chainId]}::${SECONDARY_ACCESS_CONTROL_MODULE}::get_role`,
     type_arguments: [],
     arguments: [],
   };

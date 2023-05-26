@@ -1,6 +1,6 @@
 import { Button, Input, Select } from "antd";
 import { useMemo, useState } from "react";
-import InformationSDK from "metaspacecy-aptos-prediction";
+import InformationSDK from "../../../src/index";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { HexString } from "aptos";
 
@@ -77,7 +77,10 @@ const PredictEvent = () => {
       };
     });
   };
-  const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID);
+  const informationSDk = new InformationSDK(
+    chainID,
+    "0xe19be26e54ebdcacd485422452b74de8e374e65795413f358dc199058088ba50"
+  );
   console.log(informationSDk);
   const handlePredictEvent = () => {
     if (typeEvent === "predict") {
