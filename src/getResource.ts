@@ -230,7 +230,6 @@ export const getOptionPrice = async (
   const initScale = 1 / (options.length - 1);
   const poolScale = tokenData.supply / (totalSupply - tokenData.supply);
   const rewardRate = totalSupply / tokenData.supply;
-  const tokenRate =
-    initScale > poolScale ? initScale - poolScale : poolScale - initScale;
+  const tokenRate = 1 - (initScale - poolScale);
   return (rewardRate / ((rewardRate - 1) * tokenRate + 1)).toFixed(4);
 };

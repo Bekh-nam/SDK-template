@@ -1,6 +1,6 @@
 import { Button, Input, Select } from "antd";
 import { useMemo, useState } from "react";
-import InformationSDK from "../../../src/index";
+import InformationSDK from "@metaspacecy/information-sdk/move";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { HexString } from "aptos";
 

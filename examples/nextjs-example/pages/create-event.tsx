@@ -1,6 +1,6 @@
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Button, DatePicker, DatePickerProps, Input, Select } from "antd";
-import InformationSDK from "../../../src/index";
+import InformationSDK from "@metaspacecy/information-sdk/move";
 import { useMemo, useState } from "react";
 import { HexString } from "aptos";
 
@@ -44,8 +44,7 @@ const CreateEvent = () => {
     return 2;
   }, []);
 
-  const informationSDk = new InformationSDK(chainID, privateKey);
-  console.log(informationSDk);
+  const informationSDk = new InformationSDK(signAndSubmitTransaction, chainID);
   const handleChangeTypeEvent = (value: string) => {
     setTypeEvent(value);
   };
