@@ -45,12 +45,8 @@
 		"EVM"
 	],
 	"dependencies": {
-		"@ethersproject/abi": "^5.7.0",
-		"@ethersproject/bytes": "^5.7.0",
-		"@ethersproject/contracts": "^5.7.0",
-		"@ethersproject/providers": "^5.7.2",
 		"axios": "^1.4.0",
-		"ethers": "5.5.0"
+		"ethers": "^5.5.0"
 	},
 	"devDependencies": {
 		"@types/jest": "28.1.8",
