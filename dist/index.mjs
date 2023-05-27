@@ -599,7 +599,7 @@ var getEventIdsOfUserPredictedFromBlock = async (network, apiKey, userAddress) =
 
 // src/resources/prediction/index.ts
 var InformationSDK = class {
-  constructor(providerOrSigner, network) {
+  constructor(providerOrSigner, network, config) {
     const provider = providerOrSigner instanceof providers.Provider ? providerOrSigner : providerOrSigner.provider;
     this.signer = providerOrSigner._isSigner ? providerOrSigner : void 0;
     if (!provider) {
@@ -607,6 +607,7 @@ var InformationSDK = class {
     }
     this.provider = provider;
     this.network = network;
+    this.apiKeyNetwork = config == null ? void 0 : config.apiKeyNetWork;
     this.contract = new Contract2(PREDICTION_ADDRESS[network], PredictionABI, this.provider);
   }
   async getEntranceFee() {
@@ -636,16 +637,20 @@ var InformationSDK = class {
       outcomes: outcomes.map((o) => +o.toString())
     };
   }
-  async getEventsOfCreator(creatorAddress, apiKey) {
-    const eventIds = await getEventIdsOfCreatorFromBlock(this.network, apiKey, creatorAddress);
+  async getEventsOfCreator(creatorAddress) {
+    if (!this.apiKeyNetwork)
+      throw new Error("Must config api key network !");
+    const eventIds = await getEventIdsOfCreatorFromBlock(this.network, this.apiKeyNetwork, creatorAddress);
     return Promise.all(
       eventIds.map(async (id) => {
         return await this.getEventDetail(id);
       })
     );
   }
-  async getEventsOfUserPredicted(userAddress, apiKey) {
-    const eventIds = await getEventIdsOfUserPredictedFromBlock(this.network, apiKey, userAddress);
+  async getEventsOfUserPredicted(userAddress) {
+    if (!this.apiKeyNetwork)
+      throw new Error("Must config api key network !");
+    const eventIds = await getEventIdsOfUserPredictedFromBlock(this.network, this.apiKeyNetwork, userAddress);
     return Promise.all(
       eventIds.map(async (id) => {
         return await this.getEventDetail(id);

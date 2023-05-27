@@ -4,7 +4,7 @@ import { PredictionABI } from "../../abi/Prediction";
 import { Network } from "../../types";
 import { NATIVE_ADDRESS, PREDICTION_ADDRESS } from "../../constant";
 import AdminVirtual from "../access/adminVirtual";
-import type { EventDetail, CreatedEventOutput, PredictedEventOutput, ResolveEventOutput, RedeemEventOutput, CancelEventOutput } from "./types";
+import type { EventDetail, CreatedEventOutput, PredictedEventOutput, ResolveEventOutput, RedeemEventOutput, CancelEventOutput, ConfigExpand } from "./types";
 import type { RegisterOperatorOutput } from "../access/types";
 import { Erc20Abi } from "../../abi/ERC20";
 import type { ERC20 as ERC20Contract } from "../../typechain/ERC20";
@@ -16,8 +16,9 @@ class InformationSDK {
 	private network: Network;
 	private provider: providers.Provider;
 	private signer?: Signer;
+	private apiKeyNetwork?: string;
 
-	constructor(providerOrSigner: providers.JsonRpcProvider | Signer, network: Network) {
+	constructor(providerOrSigner: providers.JsonRpcProvider | Signer, network: Network, config?: ConfigExpand) {
 		const provider = providerOrSigner instanceof providers.Provider ? providerOrSigner : providerOrSigner.provider;
 		this.signer = (providerOrSigner as Signer)._isSigner ? (providerOrSigner as Signer) : undefined;
 
@@ -27,7 +28,7 @@ class InformationSDK {
 
 		this.provider = provider;
 		this.network = network;
-
+		this.apiKeyNetwork = config?.apiKeyNetWork;
 		this.contract = new Contract(PREDICTION_ADDRESS[network], PredictionABI, this.provider) as unknown as PredictionCollateral;
 	}
 
@@ -78,8 +79,10 @@ class InformationSDK {
 	 * @param apiKey api key of network, can get in scan of network
 	 * @returns array events detail
 	 */
-	public async getEventsOfCreator(creatorAddress: string, apiKey: string): Promise<Array<EventDetail>> {
-		const eventIds = await getEventIdsOfCreatorFromBlock(this.network, apiKey, creatorAddress);
+	public async getEventsOfCreator(creatorAddress: string): Promise<Array<EventDetail>> {
+		if (!this.apiKeyNetwork) throw new Error("Must config api key network !");
+
+		const eventIds = await getEventIdsOfCreatorFromBlock(this.network, this.apiKeyNetwork, creatorAddress);
 
 		return Promise.all(
 			eventIds.map(async (id: number) => {
@@ -93,8 +96,11 @@ class InformationSDK {
 	 * @param apiKey api key of network, can get in scan of network
 	 * @returns array events detail
 	 */
-	public async getEventsOfUserPredicted(userAddress: string, apiKey: string): Promise<Array<EventDetail>> {
-		const eventIds = await getEventIdsOfUserPredictedFromBlock(this.network, apiKey, userAddress);
+	public async getEventsOfUserPredicted(userAddress: string): Promise<Array<EventDetail>> {
+		if (!this.apiKeyNetwork) throw new Error("Must config api key network !");
+
+		const eventIds = await getEventIdsOfUserPredictedFromBlock(this.network, this.apiKeyNetwork, userAddress);
+
 		return Promise.all(
 			eventIds.map(async (id: number) => {
 				return await this.getEventDetail(id);
