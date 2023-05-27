@@ -40,3 +40,7 @@ export type CancelEventOutput = {
 	eventId: number;
 	txHash: string;
 };
+
+export type ConfigExpand = {
+	apiKeyNetWork: string;
+};

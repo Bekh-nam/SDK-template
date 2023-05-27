@@ -941,6 +941,9 @@ declare type CancelEventOutput = {
     eventId: number;
     txHash: string;
 };
+declare type ConfigExpand = {
+    apiKeyNetWork: string;
+};
 
 declare type RegisterOperatorOutput = {
     operator: string;
@@ -952,7 +955,8 @@ declare class InformationSDK {
     private network;
     private provider;
     private signer?;
-    constructor(providerOrSigner: providers.JsonRpcProvider | Signer, network: Network);
+    private apiKeyNetwork?;
+    constructor(providerOrSigner: providers.JsonRpcProvider | Signer, network: Network, config?: ConfigExpand);
     /**
      * @return Amount fee native coin of network,that fee creator pay when want to create event.
      */
@@ -966,11 +970,25 @@ declare class InformationSDK {
      */
     getTotalEvent(): Promise<number>;
     /**
-     * @abstract get all parameter of a event.
+     * @abstract get all parameter of a event
      * @param eventId index of event, identifier for that event
-     * @returns Detail of a event .
+     * @returns Detail of a event
      */
     getEventDetail(eventId: number): Promise<EventDetail>;
+    /**
+     * @abstract get all events of creator created
+     * @param creatorAddress address of creator
+     * @param apiKey api key of network, can get in scan of network
+     * @returns array events detail
+     */
+    getEventsOfCreator(creatorAddress: string): Promise<Array<EventDetail>>;
+    /**
+     * @abstract get all events of user predicted
+     * @param userAddress address of user
+     * @param apiKey api key of network, can get in scan of network
+     * @returns array events detail
+     */
+    getEventsOfUserPredicted(userAddress: string): Promise<Array<EventDetail>>;
     /**
      * @abstract Register permission to create event.
      */
