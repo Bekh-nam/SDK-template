@@ -1,10 +1,10 @@
 export const PREDICTION_ADDRESS: { [key: number]: string } = {
-	97: "0x12CB90e52054B2D41D7cbEc4989f005dCaCec6a0",
+	97: "0x6Dd2B1Aff0f99aB4C29087B89bF8500085b2E272",
 	56: "",
 };
 
 export const ADMIN_VIRTUAL_ADDRESS: { [key: number]: string } = {
-	97: "0xF31eE0EaeA33c9792b20959bf79e5CF6F40867Db",
+	97: "0x519A2c0b94eF27024dC4c0B6f9B0e3A14edDaB26",
 	56: "",
 };
 
