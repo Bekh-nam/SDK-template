@@ -1,6 +1,6 @@
 {
-	"name": "information-sdk",
-	"description": "Prediction SDK",
+	"name": "sea-sdk",
+	"description": " SDK",
 	"license": "MIT",
 	"engines": {
 		"node": ">=14.0.0"
@@ -8,6 +8,7 @@
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
 	"types": "dist/index.d.ts",
+	"type": "module",
 	"exports": {
 		".": {
 			"import": "./dist/index.mjs",
@@ -31,26 +32,19 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/MetaSpacecy/prediction-evm-sdk.git"
+		"url": ""
 	},
-	"homepage": "https://github.com/MetaSpacecy/prediction-evm-sdk",
+	"homepage": "",
 	"bugs": {
-		"url": "https://github.com/MetaSpacecy/prediction-evm-sdk/issues"
+		"url": ""
 	},
-	"author": "Bekh-nam <bekhnam2021@gmail.com>, ctdarius <space.sea1611@gmail.com>",
+	"author": "",
 	"keywords": [
-		"Metaspacecy",
-		"Information",
-		"Prediction",
 		"EVM"
 	],
 	"dependencies": {
-		"@ethersproject/abi": "^5.7.0",
-		"@ethersproject/bytes": "^5.7.0",
-		"@ethersproject/contracts": "^5.7.0",
-		"@ethersproject/providers": "^5.7.2",
 		"axios": "^1.4.0",
-		"ethers": "5.5.0"
+		"ethers": "^5.5.0"
 	},
 	"devDependencies": {
 		"@types/jest": "28.1.8",
@@ -72,5 +66,5 @@
 		"typedoc": "^0.23.20",
 		"typescript": "4.8.2"
 	},
-	"version": "1.0.0"
+	"version": "1.0.3"
 }

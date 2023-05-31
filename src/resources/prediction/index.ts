@@ -3,7 +3,7 @@ import type { PredictionCollateral } from "../../typechain/PredictionCollateral"
 import { PredictionABI } from "../../abi/Prediction";
 import { Network } from "../../types";
 import { NATIVE_ADDRESS, PREDICTION_ADDRESS } from "../../constant";
-import AdminVirtual from "../access/adminVirtual";
+import AdminVirtual from "../access/registerRole";
 import type { EventDetail, CreatedEventOutput, PredictedEventOutput, ResolveEventOutput, RedeemEventOutput, CancelEventOutput, ConfigExpand } from "./types";
 import type { RegisterOperatorOutput } from "../access/types";
 import { Erc20Abi } from "../../abi/ERC20";

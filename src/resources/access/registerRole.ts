@@ -1,15 +1,15 @@
 import { Contract, Signer } from "ethers";
-import { AdminVirtualAbi } from "../../abi/AdminVirtual";
+import { RegisterAbi } from "../../abi/RegisterRole";
 import { ADMIN_VIRTUAL_ADDRESS } from "../../constant";
 import { Network } from "../../types";
-import { AdminVirtual as AdminVirtualType } from "../../typechain/AdminVirtual";
+import { RegisterRole as RegisterRoleType } from "../../typechain/RegisterRole";
 import type { RegisterOperatorOutput } from "./types";
 
-export default class AdminVirtual {
-	public contract: AdminVirtualType;
+export default class RegisterRole {
+	public contract: RegisterRoleType;
 
 	constructor(signer: Signer, network: Network) {
-		this.contract = new Contract(ADMIN_VIRTUAL_ADDRESS[network], AdminVirtualAbi, signer) as unknown as AdminVirtualType;
+		this.contract = new Contract(ADMIN_VIRTUAL_ADDRESS[network], RegisterAbi, signer) as unknown as RegisterRoleType;
 	}
 
 	public async registerOperator(): Promise<RegisterOperatorOutput> {
