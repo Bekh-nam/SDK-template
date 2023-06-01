@@ -47,6 +47,6 @@ const prediction = new InformationSDK(signer, Network.bnbTestnet, { apiKeyNetWor
 // 	console.log("result::::", result);
 // });
 
-// prediction.getEventsOfUserPredicted("0x5A5316f2619BF119c2FB2230669b1A4c5a707279").then((result) => {
-// 	console.log("result::::", result);
-// });
+prediction.getEventsOfUserPredicted("0x5A5316f2619BF119c2FB2230669b1A4c5a707279").then((result) => {
+	console.log("result::::", result);
+});

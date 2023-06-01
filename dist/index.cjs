@@ -1,5 +1,38 @@
+"use strict";
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/index.ts
+var src_exports = {};
+__export(src_exports, {
+  InformationSDK: () => prediction_default,
+  Network: () => Network
+});
+module.exports = __toCommonJS(src_exports);
+
 // src/resources/prediction/index.ts
-import { providers, Contract as Contract2, ethers as ethers2 } from "ethers";
+var import_ethers3 = require("ethers");
 
 // src/abi/Prediction.ts
 var PredictionABI = [
@@ -234,27 +267,67 @@ var ENDPOINT_API = {
   56: "https://api.bscscan.com"
 };
 
-// src/resources/access/adminVirtual.ts
-import { Contract } from "ethers";
+// src/resources/access/registerRole.ts
+var import_ethers = require("ethers");
 
-// src/abi/AdminVirtual.ts
-var AdminVirtualAbi = [
-  { inputs: [{ internalType: "address", name: "accessControl", type: "address" }], stateMutability: "nonpayable", type: "constructor" },
+// src/abi/RegisterRole.ts
+var RegisterAbi = [
   {
-    inputs: [{ internalType: "address", name: "addr", type: "address" }],
+    inputs: [
+      {
+        internalType: "address",
+        name: "accessControl",
+        type: "address"
+      }
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "addr",
+        type: "address"
+      }
+    ],
     name: "hasOperator",
-    outputs: [{ internalType: "bool", name: "isOperator", type: "bool" }],
+    outputs: [
+      {
+        internalType: "bool",
+        name: "isOperator",
+        type: "bool"
+      }
+    ],
     stateMutability: "view",
     type: "function"
   },
-  { inputs: [], name: "metaspacecyAccessControls", outputs: [{ internalType: "contract MetaspacecyAccessControls", name: "", type: "address" }], stateMutability: "view", type: "function" },
-  { inputs: [], name: "registerOperator", outputs: [], stateMutability: "nonpayable", type: "function" }
+  {
+    inputs: [],
+    name: "metaspacecyAccessControls",
+    outputs: [
+      {
+        internalType: "contract MetaspacecyAccessControls",
+        name: "",
+        type: "address"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "registerOperator",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  }
 ];
 
-// src/resources/access/adminVirtual.ts
-var AdminVirtual = class {
+// src/resources/access/registerRole.ts
+var RegisterRole = class {
   constructor(signer, network) {
-    this.contract = new Contract(ADMIN_VIRTUAL_ADDRESS[network], AdminVirtualAbi, signer);
+    this.contract = new import_ethers.Contract(ADMIN_VIRTUAL_ADDRESS[network], RegisterAbi, signer);
   }
   async registerOperator() {
     const tx = await this.contract.registerOperator();
@@ -564,15 +637,15 @@ var Erc20Abi = [
 ];
 
 // src/utils/thirdPartyHelper.ts
-import axios from "axios";
-import { ethers } from "ethers";
+var import_axios = __toESM(require("axios"), 1);
+var import_ethers2 = require("ethers");
 var getEventIdsOfCreatorFromBlock = async (network, apiKey, creatorAddress) => {
   var _a;
-  const { data } = await axios({
+  const { data } = await (0, import_axios.default)({
     method: "get",
     url: `${ENDPOINT_API[network]}/api?module=logs&action=getLogs&address=${PREDICTION_ADDRESS[network]}&topic2=0x000000000000000000000000${creatorAddress.slice(2)}&apikey=${apiKey}`
   });
-  const iface = new ethers.utils.Interface(PredictionABI);
+  const iface = new import_ethers2.ethers.utils.Interface(PredictionABI);
   const eventsOfCreator = (_a = data == null ? void 0 : data.result) == null ? void 0 : _a.map((e) => iface.decodeEventLog("CreatedEvent", e.data, e.topics));
   return eventsOfCreator == null ? void 0 : eventsOfCreator.map((e) => {
     let { eventId } = e;
@@ -581,8 +654,8 @@ var getEventIdsOfCreatorFromBlock = async (network, apiKey, creatorAddress) => {
 };
 var getEventIdsOfUserPredictedFromBlock = async (network, apiKey, userAddress) => {
   var _a;
-  const iface = new ethers.utils.Interface(PredictionABI);
-  const { data } = await axios({
+  const iface = new import_ethers2.ethers.utils.Interface(PredictionABI);
+  const { data } = await (0, import_axios.default)({
     method: "get",
     url: `${ENDPOINT_API[network]}/api?module=logs&action=getLogs&address=${PREDICTION_ADDRESS[network]}&topic0=${iface.getEventTopic(
       "PredictedEvent"
@@ -600,7 +673,7 @@ var getEventIdsOfUserPredictedFromBlock = async (network, apiKey, userAddress) =
 // src/resources/prediction/index.ts
 var InformationSDK = class {
   constructor(providerOrSigner, network, config) {
-    const provider = providerOrSigner instanceof providers.Provider ? providerOrSigner : providerOrSigner.provider;
+    const provider = providerOrSigner instanceof import_ethers3.providers.Provider ? providerOrSigner : providerOrSigner.provider;
     this.signer = providerOrSigner._isSigner ? providerOrSigner : void 0;
     if (!provider) {
       throw new Error("Either a provider or custom signer with provider must be provided");
@@ -608,11 +681,11 @@ var InformationSDK = class {
     this.provider = provider;
     this.network = network;
     this.apiKeyNetwork = config == null ? void 0 : config.apiKeyNetWork;
-    this.contract = new Contract2(PREDICTION_ADDRESS[network], PredictionABI, this.provider);
+    this.contract = new import_ethers3.Contract(PREDICTION_ADDRESS[network], PredictionABI, this.provider);
   }
   async getEntranceFee() {
     const feeWei = await this.contract.entranceFee();
-    return +ethers2.utils.formatEther(feeWei);
+    return +import_ethers3.ethers.utils.formatEther(feeWei);
   }
   async getServiceFeePercent() {
     const percent = await this.contract.SERVICE_FEE();
@@ -658,7 +731,7 @@ var InformationSDK = class {
     );
   }
   async registerOperator() {
-    const adminVirtual = new AdminVirtual(this._getSigner(), this.network);
+    const adminVirtual = new RegisterRole(this._getSigner(), this.network);
     return await adminVirtual.registerOperator();
   }
   async createEvent(description, answers, payment, creatorFee, startTime, endTime, extraTime, accountAddress) {
@@ -749,7 +822,7 @@ var InformationSDK = class {
     if (this.signer) {
       return this.signer;
     }
-    if (!(this.provider instanceof providers.JsonRpcProvider)) {
+    if (!(this.provider instanceof import_ethers3.providers.JsonRpcProvider)) {
       throw new Error("Either signer or a JsonRpcProvider must be provided");
     }
     return this.provider.getSigner(accountAddress);
@@ -758,18 +831,18 @@ var InformationSDK = class {
     if (this.signer) {
       return this.signer;
     }
-    if (!(this.provider instanceof providers.JsonRpcProvider)) {
+    if (!(this.provider instanceof import_ethers3.providers.JsonRpcProvider)) {
       throw new Error("Either signer or a JsonRpcProvider must be provided");
     }
     return this.provider.getSigner(accountAddress);
   }
   async _parseAmountToWei(addressToken, amount) {
     if (addressToken === NATIVE_ADDRESS) {
-      return ethers2.utils.parseUnits(amount.toString(), 18);
+      return import_ethers3.ethers.utils.parseUnits(amount.toString(), 18);
     } else {
-      const token = new Contract2(addressToken, Erc20Abi, this.provider);
+      const token = new import_ethers3.Contract(addressToken, Erc20Abi, this.provider);
       let decimal = await token.decimals();
-      return ethers2.utils.parseUnits(amount.toString(), decimal);
+      return import_ethers3.ethers.utils.parseUnits(amount.toString(), decimal);
     }
   }
 };
@@ -781,8 +854,9 @@ var Network = /* @__PURE__ */ ((Network2) => {
   Network2[Network2["bnbMainnet"] = 56] = "bnbMainnet";
   return Network2;
 })(Network || {});
-export {
-  prediction_default as InformationSDK,
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  InformationSDK,
   Network
-};
-//# sourceMappingURL=index.mjs.map
+});
+//# sourceMappingURL=index.cjs.map

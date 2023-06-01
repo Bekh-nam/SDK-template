@@ -214,3 +214,659 @@ export const PredictionABI = [
 	{ inputs: [{ internalType: "uint256", name: "_amount", type: "uint256" }], name: "updateEntranceFee", outputs: [], stateMutability: "nonpayable", type: "function" },
 	{ inputs: [{ internalType: "address", name: "_recepient", type: "address" }], name: "updateFeeRecipient", outputs: [], stateMutability: "nonpayable", type: "function" },
 ];
+
+export const PredictionAbi = [
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "uint256",
+				name: "eventId",
+				type: "uint256",
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "amount",
+				type: "uint256",
+			},
+		],
+		name: "AdditionalRewardEvent",
+		type: "event",
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "creator",
+				type: "address",
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "eventId",
+				type: "uint256",
+			},
+		],
+		name: "CancelEvent",
+		type: "event",
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "uint256",
+				name: "eventId",
+				type: "uint256",
+			},
+			{
+				indexed: true,
+				internalType: "address",
+				name: "creator",
+				type: "address",
+			},
+			{
+				indexed: false,
+				internalType: "string",
+				name: "description",
+				type: "string",
+			},
+			{
+				indexed: false,
+				internalType: "string[]",
+				name: "_options",
+				type: "string[]",
+			},
+			{
+				indexed: false,
+				internalType: "address",
+				name: "paymentToken",
+				type: "address",
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "creatorFee",
+				type: "uint256",
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "startTime",
+				type: "uint256",
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "endTime",
+				type: "uint256",
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "payoutTime",
+				type: "uint256",
+			},
+		],
+		name: "CreatedEvent",
+		type: "event",
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: false,
+				internalType: "address",
+				name: "account",
+				type: "address",
+			},
+		],
+		name: "Paused",
+		type: "event",
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "predictor",
+				type: "address",
+			},
+			{
+				indexed: true,
+				internalType: "uint256",
+				name: "eventId",
+				type: "uint256",
+			},
+			{
+				indexed: true,
+				internalType: "uint256",
+				name: "option",
+				type: "uint256",
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "amount",
+				type: "uint256",
+			},
+		],
+		name: "PredictedEvent",
+		type: "event",
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "predictor",
+				type: "address",
+			},
+			{
+				indexed: true,
+				internalType: "uint256",
+				name: "eventId",
+				type: "uint256",
+			},
+			{
+				indexed: true,
+				internalType: "uint256",
+				name: "option",
+				type: "uint256",
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "reward",
+				type: "uint256",
+			},
+		],
+		name: "RedeemEvent",
+		type: "event",
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "uint256",
+				name: "eventId",
+				type: "uint256",
+			},
+			{
+				indexed: false,
+				internalType: "address",
+				name: "creator",
+				type: "address",
+			},
+			{
+				indexed: false,
+				internalType: "uint256[]",
+				name: "outcomes",
+				type: "uint256[]",
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "creatorFee",
+				type: "uint256",
+			},
+		],
+		name: "ResolvedEvent",
+		type: "event",
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: false,
+				internalType: "address",
+				name: "account",
+				type: "address",
+			},
+		],
+		name: "Unpaused",
+		type: "event",
+	},
+	{
+		inputs: [],
+		name: "INVERSE_BASIS_POINT",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "MAX_CREATOR_FEE",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "SERVICE_FEE",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "_eventId",
+				type: "uint256",
+			},
+			{
+				internalType: "uint256",
+				name: "_amount",
+				type: "uint256",
+			},
+		],
+		name: "additionalRewardEvent",
+		outputs: [],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "_eventId",
+				type: "uint256",
+			},
+		],
+		name: "cancelEvent",
+		outputs: [],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "conditionalToken",
+		outputs: [
+			{
+				internalType: "contract IConditionalToken",
+				name: "",
+				type: "address",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes",
+				name: "data",
+				type: "bytes",
+			},
+		],
+		name: "createEvent",
+		outputs: [],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "_eventId",
+				type: "uint256",
+			},
+		],
+		name: "eventDetail",
+		outputs: [
+			{
+				components: [
+					{
+						internalType: "string",
+						name: "description",
+						type: "string",
+					},
+					{
+						internalType: "string[]",
+						name: "options",
+						type: "string[]",
+					},
+					{
+						internalType: "address",
+						name: "creator",
+						type: "address",
+					},
+					{
+						internalType: "address",
+						name: "paymentToken",
+						type: "address",
+					},
+					{
+						internalType: "uint256",
+						name: "reward",
+						type: "uint256",
+					},
+					{
+						internalType: "uint256",
+						name: "creatorFee",
+						type: "uint256",
+					},
+					{
+						internalType: "uint256",
+						name: "startTime",
+						type: "uint256",
+					},
+					{
+						internalType: "uint256",
+						name: "endTime",
+						type: "uint256",
+					},
+					{
+						internalType: "uint256",
+						name: "payoutTime",
+						type: "uint256",
+					},
+					{
+						internalType: "uint256[]",
+						name: "outcomes",
+						type: "uint256[]",
+					},
+				],
+				internalType: "struct Prediction.Event",
+				name: "_event",
+				type: "tuple",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
+		],
+		name: "extraReward",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "informationMarket",
+		outputs: [
+			{
+				internalType: "contract IInformationMarket",
+				name: "",
+				type: "address",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_informationMarket",
+				type: "address",
+			},
+			{
+				internalType: "address",
+				name: "_conditionalToken",
+				type: "address",
+			},
+			{
+				internalType: "address",
+				name: "_accessControl",
+				type: "address",
+			},
+		],
+		name: "initialize",
+		outputs: [],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "metaspacecyAccessControls",
+		outputs: [
+			{
+				internalType: "contract MetaspacecyAccessControls",
+				name: "",
+				type: "address",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
+			{
+				internalType: "uint256[]",
+				name: "",
+				type: "uint256[]",
+			},
+			{
+				internalType: "uint256[]",
+				name: "",
+				type: "uint256[]",
+			},
+			{
+				internalType: "bytes",
+				name: "",
+				type: "bytes",
+			},
+		],
+		name: "onERC1155BatchReceived",
+		outputs: [
+			{
+				internalType: "bytes4",
+				name: "",
+				type: "bytes4",
+			},
+		],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+			{
+				internalType: "bytes",
+				name: "",
+				type: "bytes",
+			},
+		],
+		name: "onERC1155Received",
+		outputs: [
+			{
+				internalType: "bytes4",
+				name: "",
+				type: "bytes4",
+			},
+		],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "paused",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "_eventId",
+				type: "uint256",
+			},
+			{
+				internalType: "uint256",
+				name: "_option",
+				type: "uint256",
+			},
+			{
+				internalType: "uint256",
+				name: "_amount",
+				type: "uint256",
+			},
+		],
+		name: "predictEvent",
+		outputs: [],
+		stateMutability: "payable",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "_eventId",
+				type: "uint256",
+			},
+			{
+				internalType: "uint256",
+				name: "_option",
+				type: "uint256",
+			},
+			{
+				internalType: "uint256",
+				name: "_amount",
+				type: "uint256",
+			},
+		],
+		name: "redeemEvent",
+		outputs: [],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "_eventId",
+				type: "uint256",
+			},
+			{
+				internalType: "uint256[]",
+				name: "_outcomes",
+				type: "uint256[]",
+			},
+		],
+		name: "resolveEvent",
+		outputs: [],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes4",
+				name: "interfaceId",
+				type: "bytes4",
+			},
+		],
+		name: "supportsInterface",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "totalEvent",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "total",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "typeId",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+];
