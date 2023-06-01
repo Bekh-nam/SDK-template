@@ -234,27 +234,67 @@ var ENDPOINT_API = {
   56: "https://api.bscscan.com"
 };
 
-// src/resources/access/adminVirtual.ts
+// src/resources/access/registerRole.ts
 import { Contract } from "ethers";
 
-// src/abi/AdminVirtual.ts
-var AdminVirtualAbi = [
-  { inputs: [{ internalType: "address", name: "accessControl", type: "address" }], stateMutability: "nonpayable", type: "constructor" },
+// src/abi/RegisterRole.ts
+var RegisterAbi = [
   {
-    inputs: [{ internalType: "address", name: "addr", type: "address" }],
+    inputs: [
+      {
+        internalType: "address",
+        name: "accessControl",
+        type: "address"
+      }
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "addr",
+        type: "address"
+      }
+    ],
     name: "hasOperator",
-    outputs: [{ internalType: "bool", name: "isOperator", type: "bool" }],
+    outputs: [
+      {
+        internalType: "bool",
+        name: "isOperator",
+        type: "bool"
+      }
+    ],
     stateMutability: "view",
     type: "function"
   },
-  { inputs: [], name: "metaspacecyAccessControls", outputs: [{ internalType: "contract MetaspacecyAccessControls", name: "", type: "address" }], stateMutability: "view", type: "function" },
-  { inputs: [], name: "registerOperator", outputs: [], stateMutability: "nonpayable", type: "function" }
+  {
+    inputs: [],
+    name: "metaspacecyAccessControls",
+    outputs: [
+      {
+        internalType: "contract MetaspacecyAccessControls",
+        name: "",
+        type: "address"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "registerOperator",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  }
 ];
 
-// src/resources/access/adminVirtual.ts
-var AdminVirtual = class {
+// src/resources/access/registerRole.ts
+var RegisterRole = class {
   constructor(signer, network) {
-    this.contract = new Contract(ADMIN_VIRTUAL_ADDRESS[network], AdminVirtualAbi, signer);
+    this.contract = new Contract(ADMIN_VIRTUAL_ADDRESS[network], RegisterAbi, signer);
   }
   async registerOperator() {
     const tx = await this.contract.registerOperator();
@@ -658,7 +698,7 @@ var InformationSDK = class {
     );
   }
   async registerOperator() {
-    const adminVirtual = new AdminVirtual(this._getSigner(), this.network);
+    const adminVirtual = new RegisterRole(this._getSigner(), this.network);
     return await adminVirtual.registerOperator();
   }
   async createEvent(description, answers, payment, creatorFee, startTime, endTime, extraTime, accountAddress) {
