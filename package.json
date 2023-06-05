@@ -28,15 +28,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/MetaSpacecy/prediction-aptos-sdk.git"
+    "url": "https://github.com/Bekh-nam/SDK-template.git"
   },
-  "homepage": "https://github.com/MetaSpacecy/prediction-aptos-sdk",
+  "homepage": "https://github.com/Bekh-nam/SDK-template",
   "bugs": {
-    "url": "https://github.com/MetaSpacecy/prediction-aptos-sdk/issues"
+    "url": "https://github.com/Bekh-nam/SDK-template/issues"
   },
-  "author": "Bekh-nam <bekhnam2021@gmail.com>, toan.vo24122000 <space.vtoan@gmail.com>",
+  "author": "Bekh-nam <bekhnam2021@gmail.com>",
   "keywords": [
-    "metaspacecy",
+    "Information",
     "Prediction",
     "Aptos",
     "Move"

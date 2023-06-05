@@ -1,12 +1,12 @@
 export const MODULE_ADDRESS = {
-  1: "0x8369f3a7bfc2f4e65e93e0c2a685348fb9573ad50b2ac6d7b4e494dc32e9e55b",
-  2: "0x8369f3a7bfc2f4e65e93e0c2a685348fb9573ad50b2ac6d7b4e494dc32e9e55b",
-  41: "0x8369f3a7bfc2f4e65e93e0c2a685348fb9573ad50b2ac6d7b4e494dc32e9e55b",
+  1: "0x98d807bee3b8a28feb99c87712787ad1608c5e31cd6770669e39dcb8a3ae6b0d",
+  2: "0x98d807bee3b8a28feb99c87712787ad1608c5e31cd6770669e39dcb8a3ae6b0d",
+  41: "0x98d807bee3b8a28feb99c87712787ad1608c5e31cd6770669e39dcb8a3ae6b0d",
 };
 export const RESOURCE_ADDRESS = {
-  1: "0x62fefa12b20dad8852668cd7d254111636f088dfcca80e4db53b0dea2b861c2b",
-  2: "0x62fefa12b20dad8852668cd7d254111636f088dfcca80e4db53b0dea2b861c2b",
-  41: "0x62fefa12b20dad8852668cd7d254111636f088dfcca80e4db53b0dea2b861c2b",
+  1: "0x79bf4ba0dd0e0369dd15644192e8264db9f863a03b299cd85a5367b8d214c231",
+  2: "0x79bf4ba0dd0e0369dd15644192e8264db9f863a03b299cd85a5367b8d214c231",
+  41: "0x79bf4ba0dd0e0369dd15644192e8264db9f863a03b299cd85a5367b8d214c231",
 };
 export const APTOS_NODE_URL = {
   1: "https://fullnode.mainnet.aptoslabs.com/v1",
@@ -14,9 +14,9 @@ export const APTOS_NODE_URL = {
   41: "https://fullnode.devnet.aptoslabs.com/v1",
 }
 export const COLLECTION = {
-  1: "Metaspacecy Prediction Test",
-  2: "Metaspacecy Prediction Test",
-  41: "Metaspacecy Prediction Test"
+  1: "Metaspacecy Conditional Token Test",
+  2: "Metaspacecy Conditional Token Test",
+  41: "Metaspacecy Conditional Token Test"
 }
 
 export const GraphQLEndpoint = {
