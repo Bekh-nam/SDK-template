@@ -71,8 +71,8 @@ To release a new version of the SDK do the following.
 10. Double check that the release worked by visitng npmjs: https://www.npmjs.com/package/metaspacecy-evm-sdk
 
 
-[examples]: https://github.com/MetaSpacecy/prediction-evm-sdk.git
-[repo]: https://github.com/MetaSpacecy/prediction-evm-sdk
+[examples]: https://github.com/Bekh-nam/SDK-template.git
+[repo]: https://github.com/Bekh-nam/SDK-template.git
 [npm-image-version]: https://img.shields.io/npm/v/aptos.svg
 [npm-image-downloads]: https://img.shields.io/npm/dm/aptos.svg
-[npm-url]: https://www.npmjs.com/package/metaspacecy-evm-sdk
+[npm-url]: https://www.npmjs.com/package/prediction-evm-sdk
